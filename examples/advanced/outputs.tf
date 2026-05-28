@@ -2,37 +2,39 @@
 # Outputs
 ##############################################################################
 
-#
-# Developer tips:
-#   - Include all relevant outputs from the modules being called in the example
-#
+output "id" {
+  description = "Valkey instance id"
+  value       = module.icd_valkey.id
+}
 
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = module.cos.account_id
+output "version" {
+  description = "Valkey instance version"
+  value       = module.icd_valkey.version
 }
 
 output "guid" {
-  description = "The GUID of the resource instance."
-  value       = module.cos.account_id
+  description = "Valkey instance guid"
+  value       = module.icd_valkey.guid
 }
 
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = module.cos.id
+output "service_credentials_json" {
+  description = "Service credentials json map"
+  value       = module.icd_valkey.service_credentials_json
+  sensitive   = true
 }
 
-output "crn" {
-  description = "The CRN of the resource instance."
-  value       = module.cos.crn
+output "service_credentials_object" {
+  description = "Service credentials object"
+  value       = module.icd_valkey.service_credentials_object
+  sensitive   = true
 }
 
-output "resource_group_name" {
-  description = "Resource group name."
-  value       = module.resource_group.resource_group_name
+output "hostname" {
+  description = "Valkey instance hostname"
+  value       = module.icd_valkey.hostname
 }
 
-output "resource_group_id" {
-  description = "Resource group ID."
-  value       = module.resource_group.resource_group_id
+output "port" {
+  description = "Valkey instance port"
+  value       = module.icd_valkey.port
 }
