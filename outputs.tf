@@ -43,4 +43,3 @@ output "adminuser" {
   description = "Database admin user name"
   value       = ibm_database.valkey_database.adminuser
 }
-

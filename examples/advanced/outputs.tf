@@ -28,4 +28,3 @@ output "service_credentials_object" {
   value       = module.icd_valkey.service_credentials_object
   sensitive   = true
 }
-
