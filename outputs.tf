@@ -44,18 +44,3 @@ output "adminuser" {
   value       = ibm_database.valkey_database.adminuser
 }
 
-output "hostname" {
-  description = "Database connection hostname"
-  value       = data.ibm_database_connection.database_connection.valkey[0].hosts[0].hostname
-}
-
-output "port" {
-  description = "Database connection port"
-  value       = data.ibm_database_connection.database_connection.valkey[0].hosts[0].port
-}
-
-output "certificate_base64" {
-  description = "Database connection certificate"
-  value       = data.ibm_database_connection.database_connection.valkey[0].certificate[0].certificate_base64
-  sensitive   = true
-}

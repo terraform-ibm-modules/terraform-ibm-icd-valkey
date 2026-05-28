@@ -29,12 +29,3 @@ output "service_credentials_object" {
   sensitive   = true
 }
 
-output "hostname" {
-  description = "Valkey instance hostname"
-  value       = module.icd_valkey.hostname
-}
-
-output "port" {
-  description = "Valkey instance port"
-  value       = module.icd_valkey.port
-}

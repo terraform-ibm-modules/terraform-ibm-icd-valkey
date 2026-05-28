@@ -294,9 +294,3 @@ locals {
   } : null
 }
 
-data "ibm_database_connection" "database_connection" {
-  endpoint_type = "private"
-  deployment_id = ibm_database.valkey_database.id
-  user_id       = ibm_database.valkey_database.adminuser
-  user_type     = "database"
-}
