@@ -15,12 +15,11 @@ variable "name" {
 variable "valkey_version" {
   type        = string
   description = "Version of the Valkey instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used."
-  default     = null
+  default     = "9.0"
 
-  validation {
-    condition     = var.valkey_version == null ? true : contains(local.icd_supported_versions, var.valkey_version)
-    error_message = "Unsupported valkey_version '${var.valkey_version == null ? "null" : var.valkey_version}'. Supported versions: ${join(", ", local.icd_supported_versions)}"
-  }
+  # Version validation against the live ICD deployables API is not possible for
+  # Valkey Gen2 — see the comment in main.tf. The IBM provider validates the version
+  # at plan/apply time and surfaces a clear error if the version is unsupported.
 }
 
 variable "region" {

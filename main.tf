@@ -149,16 +149,21 @@ resource "time_sleep" "wait_for_backup_kms_authorization_policy" {
 }
 
 
-module "available_versions" {
-  source   = "terraform-ibm-modules/common-utilities/ibm//modules/icd-versions"
-  version  = "1.6.0"
-  region   = var.region
-  icd_type = "valkey"
-}
-
-locals {
-  icd_supported_versions = module.available_versions.supported_versions
-}
+# icd-versions is commented out because the /v5/ibm/deployables API does not list
+# 'valkey' in classic ICD regions, and Gen2 region endpoints (ca-mon, in-che) are
+# only reachable from within IBM Cloud's private network. Version validation is
+# handled by the IBM provider at plan/apply time.
+#
+# module "available_versions" {
+#   source   = "terraform-ibm-modules/common-utilities/ibm//modules/icd-versions"
+#   version  = "1.6.0"
+#   region   = var.region
+#   icd_type = "valkey"
+# }
+#
+# locals {
+#   icd_supported_versions = module.available_versions.supported_versions
+# }
 
 
 ########################################################################################################################
