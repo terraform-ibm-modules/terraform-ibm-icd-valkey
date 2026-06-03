@@ -1,22 +1,9 @@
 ########################################################################################################################
-# Locals
+# Parse info from KMS key CRN
 ########################################################################################################################
 
 locals {
-  # If no value passed for 'backup_encryption_key_crn' use the value of 'kms_key_crn' and perform validation of 'kms_key_crn' to check if region is supported by backup encryption key.
-
-  # If 'use_ibm_owned_encryption_key' is true or 'use_default_backup_encryption_key' is true, default to null.
-  # If no value is passed for 'backup_encryption_key_crn', then default to use 'kms_key_crn'.
-  backup_encryption_key_crn = var.use_ibm_owned_encryption_key || var.use_default_backup_encryption_key ? null : (var.backup_encryption_key_crn != null ? var.backup_encryption_key_crn : var.kms_key_crn)
-}
-
-########################################################################################################################
-# Parse info from KMS key CRNs
-########################################################################################################################
-
-locals {
-  parse_kms_key        = !var.use_ibm_owned_encryption_key
-  parse_backup_kms_key = !var.use_ibm_owned_encryption_key && !var.use_default_backup_encryption_key
+  parse_kms_key = !var.use_ibm_owned_encryption_key
 }
 
 module "kms_key_crn_parser" {
@@ -26,42 +13,28 @@ module "kms_key_crn_parser" {
   crn     = var.kms_key_crn
 }
 
-module "backup_key_crn_parser" {
-  count   = local.parse_backup_kms_key ? 1 : 0
-  source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.0"
-  crn     = local.backup_encryption_key_crn
-}
-
-# Put parsed values into locals
 locals {
-  kms_service                  = local.parse_kms_key ? module.kms_key_crn_parser[0].service_name : null
-  kms_account_id               = local.parse_kms_key ? module.kms_key_crn_parser[0].account_id : null
-  kms_key_id                   = local.parse_kms_key ? module.kms_key_crn_parser[0].resource : null
-  kms_key_instance_guid        = local.parse_kms_key ? module.kms_key_crn_parser[0].service_instance : null
-  backup_kms_service           = local.parse_backup_kms_key ? module.backup_key_crn_parser[0].service_name : null
-  backup_kms_account_id        = local.parse_backup_kms_key ? module.backup_key_crn_parser[0].account_id : null
-  backup_kms_key_id            = local.parse_backup_kms_key ? module.backup_key_crn_parser[0].resource : null
-  backup_kms_key_instance_guid = local.parse_backup_kms_key ? module.backup_key_crn_parser[0].service_instance : null
+  kms_service           = local.parse_kms_key ? module.kms_key_crn_parser[0].service_name : null
+  kms_account_id        = local.parse_kms_key ? module.kms_key_crn_parser[0].account_id : null
+  kms_key_id            = local.parse_kms_key ? module.kms_key_crn_parser[0].resource : null
+  kms_key_instance_guid = local.parse_kms_key ? module.kms_key_crn_parser[0].service_instance : null
 }
 
 ########################################################################################################################
-# KMS IAM Authorization Policies
+# KMS IAM Authorization Policy
 ########################################################################################################################
 
 locals {
   # only create auth policy if 'use_ibm_owned_encryption_key' is false, and 'skip_iam_authorization_policy' is false
   create_kms_auth_policy = !var.use_ibm_owned_encryption_key && !var.skip_iam_authorization_policy ? 1 : 0
-  # only create backup auth policy if 'use_ibm_owned_encryption_key' is false, 'skip_iam_authorization_policy' is false and 'use_same_kms_key_for_backups' is false
-  create_backup_kms_auth_policy = !var.use_ibm_owned_encryption_key && !var.skip_iam_authorization_policy && !var.use_same_kms_key_for_backups ? 1 : 0
 }
 
-# Create IAM Authorization Policies to allow Valkey to access KMS for the encryption key
+# Create IAM Authorization Policy to allow Valkey to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "kms_policy" {
   count                    = local.create_kms_auth_policy
   source_service_name      = "databases-for-valkey"
   source_resource_group_id = var.resource_group_id
-  roles                    = ["Reader", "Authorization Delegator"] # Authorization Delegator role required for backup encryption key
+  roles                    = ["Reader"]
   description              = "Allow all Valkey instances in the resource group ${var.resource_group_id} to read the ${local.kms_service} key ${local.kms_key_id} from the instance GUID ${local.kms_key_instance_guid}"
   resource_attributes {
     name     = "serviceName"
@@ -103,52 +76,6 @@ resource "time_sleep" "wait_for_authorization_policy" {
   create_duration = "30s"
 }
 
-resource "ibm_iam_authorization_policy" "backup_kms_policy" {
-  count                    = local.create_backup_kms_auth_policy
-  source_service_name      = "databases-for-valkey"
-  source_resource_group_id = var.resource_group_id
-  roles                    = ["Reader", "Authorization Delegator"] # Authorization Delegator role required for backup encryption key
-  description              = "Allow all Valkey instances in the Resource Group ${var.resource_group_id} to read the ${local.backup_kms_service} key ${local.backup_kms_key_id} from the instance GUID ${local.backup_kms_key_instance_guid}"
-  resource_attributes {
-    name     = "serviceName"
-    operator = "stringEquals"
-    value    = local.backup_kms_service
-  }
-  resource_attributes {
-    name     = "accountId"
-    operator = "stringEquals"
-    value    = local.backup_kms_account_id
-  }
-  resource_attributes {
-    name     = "serviceInstance"
-    operator = "stringEquals"
-    value    = local.backup_kms_key_instance_guid
-  }
-  resource_attributes {
-    name     = "resourceType"
-    operator = "stringEquals"
-    value    = "key"
-  }
-  resource_attributes {
-    name     = "resource"
-    operator = "stringEquals"
-    value    = local.backup_kms_key_id
-  }
-  # Scope of policy now includes the key, so ensure to create new policy before
-  # destroying old one to prevent any disruption to every day services.
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-# workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
-resource "time_sleep" "wait_for_backup_kms_authorization_policy" {
-  count           = local.create_backup_kms_auth_policy
-  depends_on      = [ibm_iam_authorization_policy.backup_kms_policy]
-  create_duration = "30s"
-}
-
-
 # icd-versions is commented out because the /v5/ibm/deployables API does not list
 # 'valkey' in classic ICD regions, and Gen2 region endpoints (ca-mon, in-che) are
 # only reachable from within IBM Cloud's private network. Version validation is
@@ -171,35 +98,28 @@ resource "time_sleep" "wait_for_backup_kms_authorization_policy" {
 ########################################################################################################################
 
 resource "ibm_database" "valkey_database" {
-  depends_on                  = [time_sleep.wait_for_authorization_policy]
-  name                        = var.name
-  plan                        = "standard-gen2" # Only standard-gen2 plan is available for Valkey
-  location                    = var.region
-  service                     = "databases-for-valkey"
-  version                     = var.valkey_version
-  resource_group_id           = var.resource_group_id
-  service_endpoints           = "private" # Valkey only supports private service endpoints
-  deletion_protection         = var.deletion_protection
-  version_upgrade_skip_backup = var.version_upgrade_skip_backup
-  tags                        = var.tags
-  key_protect_key             = var.kms_key_crn
-  backup_encryption_key_crn   = local.backup_encryption_key_crn
-  backup_id                   = var.backup_crn
+  depends_on        = [time_sleep.wait_for_authorization_policy]
+  name              = var.name
+  plan              = "standard-gen2" # Only standard-gen2 plan is available for Valkey
+  location          = var.region
+  service           = "databases-for-valkey"
+  version           = var.valkey_version
+  resource_group_id = var.resource_group_id
+  service_endpoints = "private" # Valkey only supports private service endpoints
+  deletion_protection = var.deletion_protection
+  tags              = var.tags
+  key_protect_key   = var.kms_key_crn
 
-  ## This block is only added when not restoring from a backup, as group configuration is inherited from the backup.
-  dynamic "group" {
-    for_each = var.backup_crn == null ? [1] : []
-    content {
-      group_id = "member" # Only member type is allowed for IBM Cloud Databases
-      host_flavor {
-        id = var.member_host_flavor
-      }
-      disk {
-        allocation_mb = var.disk_mb
-      }
-      members {
-        allocation_count = var.members
-      }
+  group {
+    group_id = "member" # Only member type is allowed for IBM Cloud Databases
+    host_flavor {
+      id = var.member_host_flavor
+    }
+    disk {
+      allocation_mb = var.disk_mb
+    }
+    members {
+      allocation_count = var.members
     }
   }
 
@@ -207,7 +127,6 @@ resource "ibm_database" "valkey_database" {
     ignore_changes = [
       # Ignore changes to these because a change will destroy and recreate the instance
       key_protect_key,
-      backup_encryption_key_crn,
     ]
   }
 

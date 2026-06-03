@@ -33,8 +33,7 @@ resource "ibm_is_subnet" "example_subnet" {
 ##############################################################################
 
 locals {
-  data_key_name    = "${var.prefix}-valkey"
-  backups_key_name = "${var.prefix}-valkey-backups"
+  data_key_name = "${var.prefix}-valkey"
 }
 
 module "key_protect_all_inclusive" {
@@ -52,10 +51,6 @@ module "key_protect_all_inclusive" {
       keys = [
         {
           key_name     = local.data_key_name
-          force_delete = true
-        },
-        {
-          key_name     = local.backups_key_name
           force_delete = true
         }
       ]
@@ -99,11 +94,8 @@ module "icd_valkey" {
   valkey_version    = var.valkey_version
   name              = "${var.prefix}-valkey"
   region            = var.region
-  # Example of how to use different KMS keys for data and backups
   use_ibm_owned_encryption_key = false
-  use_same_kms_key_for_backups = false
   kms_key_crn                  = module.key_protect_all_inclusive.keys["icd.${local.data_key_name}"].crn
-  backup_encryption_key_crn    = module.key_protect_all_inclusive.keys["icd.${local.backups_key_name}"].crn
   service_credential_names = [
     {
       name     = "valkey_admin"
