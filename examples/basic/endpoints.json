@@ -1,0 +1,92 @@
+{
+    "IBMCLOUD_ACCOUNT_MANAGEMENT_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://accountmanagement.stage1.ng.bluemix.net"
+        }
+    },
+    "IBMCLOUD_CF_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://api.stage1.ng.bluemix.net"
+        }
+    },
+    "IBMCLOUD_CS_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://containers.test.cloud.ibm.com/global"
+        }
+    },
+    "IBMCLOUD_CR_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://registry.stage1.ng.bluemix.net"
+        }
+    },
+    "IBMCLOUD_CIS_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://api.cis.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_GS_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://api.global-search-tagging.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_IAMPAP_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://iam.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_ICD_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://api.us-south.databases.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_MCCP_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://mccp.us-south.cf.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_UAA_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://login.stage1.ng.bluemix.net/UAALoginServerWAR"
+        }
+    },
+    "IBMCLOUD_COS_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://s3.us-west.cloud-object-storage.test.appdomain.cloud"
+        }
+    },
+    "IBMCLOUD_COS_CONFIG_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://config.cloud-object-storage.test.cloud.ibm.com/v1"
+        }
+    },
+    "IBMCLOUD_IS_NG_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://us-south-stage01.iaasdev.cloud.ibm.com/v1"
+        }
+    },
+    "IBMCLOUD_IAM_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://iam.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_RESOURCE_CONTROLLER_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://resource-controller.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_RESOURCE_CATALOG_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://globalcatalog.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_RESOURCE_MANAGEMENT_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://resource-controller.test.cloud.ibm.com"
+        }
+    },
+    "IBMCLOUD_GT_API_ENDPOINT": {
+        "public": {
+            "ca-mon": "https://tags.global-search-tagging.test.cloud.ibm.com"
+        }
+    }
+}
