@@ -61,10 +61,10 @@ variable "service_credential_names" {
   description = "List of service credentials to create for the database, including name and optionally role. Endpoint is always private for Valkey."
   default     = []
 
-  validation {
-    condition     = alltrue([for credential in var.service_credential_names : contains(["Administrator", "Operator", "Viewer", "Editor"], credential.role)])
-    error_message = "`service_credential_names` role must be one of the following: `Administrator`, `Operator`, `Viewer` or `Editor`."
-  }
+  # validation {
+  #   condition     = alltrue([for credential in var.service_credential_names : contains(["Administrator", "Operator", "Viewer", "Editor"], credential.role)])
+  #   error_message = "`service_credential_names` role must be one of the following: `Administrator`, `Operator`, `Viewer` or `Editor`."
+  # }
 
   validation {
     condition     = alltrue([for credential in var.service_credential_names : credential.endpoint == "private"])

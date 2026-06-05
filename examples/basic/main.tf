@@ -30,22 +30,12 @@ module "database" {
   service_credential_names = [
     {
       name     = "valkey_admin"
-      role     = "Administrator"
+      role     = "Manager"
       endpoint = "private"
     },
     {
       name     = "valkey_operator"
-      role     = "Operator"
-      endpoint = "private"
-    },
-    {
-      name     = "valkey_viewer"
-      role     = "Viewer"
-      endpoint = "private"
-    },
-    {
-      name     = "valkey_editor"
-      role     = "Editor"
+      role     = "Writer"
       endpoint = "private"
     }
   ]
