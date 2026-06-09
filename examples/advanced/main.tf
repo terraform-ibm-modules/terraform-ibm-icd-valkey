@@ -119,7 +119,7 @@ module "icd_valkey" {
     }
   ]
   access_tags         = var.access_tags
-  member_host_flavor  = "bx3d.4x20"
+  member_host_flavor  = var.member_host_flavor
   deletion_protection = false
   cbr_rules = [
     {
