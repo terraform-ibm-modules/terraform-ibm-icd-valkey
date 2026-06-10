@@ -1,0 +1,361 @@
+{
+  "products": [
+    {
+      "name": "deploy-arch-ibm-icd-valkey",
+      "label": "Cloud automation for Databases for Valkey",
+      "product_kind": "solution",
+      "tags": [
+        "ibm_created",
+        "target_terraform",
+        "terraform",
+        "solution",
+        "data_management",
+        "database",
+        "platform_engineering"
+      ],
+      "keywords": [
+        "valkey",
+        "IaC",
+        "infrastructure as code",
+        "terraform",
+        "solution",
+        "cache",
+        "in memory"
+      ],
+      "short_description": "Creates and configures an instance of IBM Cloud Databases for Valkey.",
+      "long_description": "This architecture supports creating and configuring an instance of [Databases for Valkey](https://www.ibm.com/products/databases-for-valkey), with optional KMS encryption. \n\nLeverage [Terraform IBM Modules](https://github.com/terraform-ibm-modules) to shape and scale your solutions. You can integrate Terraform IBM Modules (TIM) to extend functionality and design a solution tailored to your environment and operations needs. These modules offer reusable, customizable elements that follow IBM Cloud's recommended practices. You can access the [source code and documentation](https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey) and use it to extend your current architecture or create new solutions.\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
+      "offering_docs_url": "https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-about-tim",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-icd-valkey/main/images/valkey_icon.svg",
+      "provider_name": "IBM",
+      "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in the repository [https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/issues](https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+      "features": [
+        {
+          "title": "KMS encryption",
+          "description": "Provides [KMS encryption](https://cloud.ibm.com/docs/databases-for-valkey?topic=databases-for-valkey-key-protect&interface=ui) for the data that you store in the database, enhancing data security."
+        },
+        {
+          "title": "Access tags",
+          "description": "Attaches access tags to the Valkey instance."
+        },
+        {
+          "title": "Composable and Extensible Architecture",
+          "description": "This architecture illustrates how Terraform IBM Modules(TIM) can be integrated to deliver a complete solution on IBM Cloud. Each module is a reusable, and validated component for security, compliance, and operational IBM best practices. You can deploy this architecture as-is or configure it as code by leveraging the underlying modules to fit your specific requirements. Explore the [source code and documentation](https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey) to adapt, extend, or create entirely new solutions using these building blocks."
+        }
+      ],
+      "flavors": [
+        {
+          "label": "Fully configurable",
+          "name": "fully-configurable",
+          "index": 1,
+          "install_type": "fullstack",
+          "working_directory": "solutions/fully-configurable",
+          "release_notes_url": "https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/releases",
+          "short_description": "Ideal for users who want flexibility with a reliable starting point.",
+          "iam_permissions": [
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "databases-for-valkey"
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "kms",
+              "notes": "[Optional] Editor access is required to create keys. It is only required when using Key Protect for encryption."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "hs-crypto",
+              "notes": "[Optional] Editor access is required to create keys in HPCS. It is only required when using HPCS for encryption."
+            }
+          ],
+          "architecture": {
+            "features": [
+              {
+                "title": " ",
+                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "Databases for Valkey instance on IBM Cloud",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-icd-valkey/main/reference-architectures/deployable-architecture-valkey.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "This architecture supports creating and configuring an instance of Databases for Valkey instance with KMS encryption."
+              }
+            ]
+          },
+          "configuration": [
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "provider_visibility",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                }
+              ]
+            },
+            {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              }
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "default_value": "dev",
+              "random_string": {
+                "length": 4
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen ('-'), and cannot contain consecutive hyphens ('--'). It should not exceed 16 characters.",
+                  "value": "^$|^__NULL__$|^[a-z](?!.*--)(?:[a-z0-9-]{0,14}[a-z0-9])?$"
+                }
+              ]
+            },
+            {
+              "key": "region",
+              "required": true,
+              "custom_config": {
+                "type": "region",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "filterString": "service:databases-for-valkey-group",
+                  "showKinds": [
+                    "region",
+                    "dc"
+                  ]
+                }
+              }
+            },
+            {
+              "key": "valkey_version",
+              "required": true,
+              "default_value": "9.0",
+              "options": [
+                {
+                  "displayname": "9.0",
+                  "value": "9.0"
+                }
+              ]
+            },
+            {
+              "key": "name"
+            },
+            {
+              "key": "resource_tags",
+              "type": "array",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "access_tags",
+              "type": "array",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "members"
+            },
+            {
+              "key": "member_disk_mb"
+            },
+            {
+              "key": "member_host_flavor"
+            },
+            {
+              "key": "deletion_protection"
+            },
+            {
+              "key": "create_timeout",
+              "hidden": true
+            },
+            {
+              "key": "update_timeout",
+              "hidden": true
+            },
+            {
+              "key": "delete_timeout",
+              "hidden": true
+            },
+            {
+              "key": "service_credential_names",
+              "type": "array",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
+            },
+            {
+              "key": "service_credential_secrets",
+              "type": "array",
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
+            },
+            {
+              "key": "existing_secrets_manager_instance_crn",
+              "display_name": "existing_secrets_manager_instance",
+              "custom_config": {
+                "type": "platform_resource",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "resourceType": "secrets-manager",
+                  "selection": "single_select",
+                  "valueType": "crn"
+                }
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'existing_secrets_manager_instance_crn' is not valid.",
+                  "value": "^__NULL__$|^crn:v\\d:(.*:){2}secrets-manager:(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                }
+              ]
+            },
+            {
+              "key": "existing_secrets_manager_endpoint_type",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "private",
+                  "value": "private"
+                }
+              ]
+            },
+            {
+              "key": "skip_valkey_secrets_manager_auth_policy"
+            },
+            {
+              "key": "ibmcloud_kms_api_key"
+            },
+            {
+              "key": "kms_encryption_enabled"
+            },
+            {
+              "key": "existing_kms_instance_crn",
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'existing_kms_instance_crn' is not valid.",
+                  "value": "^__NULL__$|^crn:v\\d:(.*:){2}(kms|hs-crypto):(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                }
+              ]
+            },
+            {
+              "key": "existing_kms_key_crn",
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'existing_kms_key_crn' is not valid.",
+                  "value": "^__NULL__$|^crn:v\\d:(.*:){2}(kms|hs-crypto):(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:key:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+                }
+              ]
+            },
+            {
+              "key": "kms_endpoint_type",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "private",
+                  "value": "private"
+                }
+              ]
+            },
+            {
+              "key": "key_ring_name"
+            },
+            {
+              "key": "key_name"
+            },
+            {
+              "key": "skip_valkey_kms_auth_policy"
+            },
+            {
+              "key": "existing_valkey_instance_crn",
+              "display_name": "existing_valkey_instance",
+              "custom_config": {
+                "type": "platform_resource",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "resourceType": "databases-for-valkey",
+                  "selection": "single_select",
+                  "valueType": "crn"
+                }
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'existing_valkey_instance_crn' is not valid.",
+                  "value": "^__NULL__$|^crn:v\\d:(.*:){2}databases-for-valkey:(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                }
+              ]
+            }
+          ],
+          "terraform_version": "1.12.2",
+          "ignore_readme": true
+        }
+      ]
+    }
+  ]
+}
