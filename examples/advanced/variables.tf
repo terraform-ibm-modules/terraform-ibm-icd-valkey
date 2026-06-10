@@ -39,3 +39,9 @@ variable "valkey_version" {
   type        = string
   default     = "9.0"
 }
+
+variable "member_host_flavor" {
+  type        = string
+  description = "The host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  default     = "bx3d.4x20"
+}
