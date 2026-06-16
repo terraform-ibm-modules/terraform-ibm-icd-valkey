@@ -5,7 +5,5 @@
   "name": $PREFIX,
   "existing_resource_group_name": "geretain-test-valkey",
   "existing_kms_instance_crn": $HPCS_US_SOUTH_CRN,
-  "deletion_protection": false,
-  "kms_encryption_enabled": true,
-  "member_host_flavor": "b3c.4x16.encrypted"
+  "deletion_protection": false
 }

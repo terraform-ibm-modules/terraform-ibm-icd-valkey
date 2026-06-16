@@ -85,7 +85,7 @@ variable "valkey_version" {
 variable "members" {
   type        = number
   description = "The number of members that are allocated. [Learn more](https://cloud.ibm.com/docs/databases-for-valkey?topic=databases-for-valkey-resources-scaling)."
-  default     = 3
+  default     = 2
 }
 
 variable "member_disk_mb" {
@@ -96,8 +96,17 @@ variable "member_disk_mb" {
 
 variable "member_host_flavor" {
   type        = string
-  description = "The host flavor per member. Valkey requires a dedicated host flavor — multitenant is not supported. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  description = "The host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
   default     = "bx3d.4x20"
+  # Prevent null or "", require a machine type
+  validation {
+    condition     = (length(var.member_host_flavor) > 0)
+    error_message = "Member host flavor must be specified. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  }
+  validation {
+    condition     = (length(var.member_host_flavor) > 0) && var.member_host_flavor != "multitenant"
+    error_message = "Shared compute, `multitenant`, is not supported for Gen2. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  }
 }
 
 variable "service_credential_names" {
@@ -172,13 +181,13 @@ variable "kms_encryption_enabled" {
 
 variable "existing_kms_instance_crn" {
   type        = string
-  description = "The CRN of a Key Protect or Hyper Protect Crypto Services instance. Required to create a new encryption key and key ring which will be used to encrypt deployment data. To use an existing key, pass values for `existing_kms_key_crn`."
+  description = "The CRN of a Key Protect instance. Required to create a new encryption key and key ring which will be used to encrypt deployment data. To use an existing key, pass values for `existing_kms_key_crn`."
   default     = null
 
   validation {
     condition = anytrue([
       var.existing_kms_instance_crn == null,
-      can(regex("^crn:v\\d:(.*:){2}(kms|hs-crypto):(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.existing_kms_instance_crn))
+      can(regex("^crn:v\\d:(.*:){2}kms:(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.existing_kms_instance_crn))
     ])
     error_message = "The value provided for 'existing_kms_instance_crn' is not valid."
   }
@@ -186,13 +195,13 @@ variable "existing_kms_instance_crn" {
 
 variable "existing_kms_key_crn" {
   type        = string
-  description = "The CRN of a Key Protect or Hyper Protect Crypto Services encryption key to encrypt your data. If no value is passed a new key will be created in the instance specified in the `existing_kms_instance_crn` input."
+  description = "The CRN of a Key Protect encryption key to encrypt your data. If no value is passed a new key will be created in the instance specified in the `existing_kms_instance_crn` input."
   default     = null
 
   validation {
     condition = anytrue([
       var.existing_kms_key_crn == null,
-      can(regex("^crn:v\\d:(.*:){2}(kms|hs-crypto):(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:key:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.existing_kms_key_crn))
+      can(regex("^crn:v\\d:(.*:){2}kms:(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:key:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.existing_kms_key_crn))
     ])
     error_message = "The value provided for 'existing_kms_key_crn' is not valid."
   }
@@ -200,12 +209,12 @@ variable "existing_kms_key_crn" {
 
 variable "kms_endpoint_type" {
   type        = string
-  description = "The type of endpoint to use for communicating with the Key Protect or Hyper Protect Crypto Services instance. Possible values: `public`, `private`. Applies only if `existing_kms_key_crn` is not specified."
+  description = "The type of endpoint to use for communicating with the Key Protect instance. Applies only if `existing_kms_key_crn` is not specified."
   default     = "private"
 
   validation {
-    condition     = can(regex("^(public|private)$", var.kms_endpoint_type))
-    error_message = "The kms_endpoint_type value must be 'public' or 'private'."
+    condition     = var.kms_endpoint_type == "private"
+    error_message = "Valkey supports only private endpoints for Key Protect. Set kms_endpoint_type to 'private'."
   }
 }
 
@@ -265,12 +274,12 @@ variable "existing_secrets_manager_instance_crn" {
 
 variable "existing_secrets_manager_endpoint_type" {
   type        = string
-  description = "The endpoint type to use if `existing_secrets_manager_instance_crn` is specified. Possible values: public, private."
+  description = "The endpoint type to use if `existing_secrets_manager_instance_crn` is specified."
   default     = "private"
 
   validation {
-    condition     = contains(["public", "private"], var.existing_secrets_manager_endpoint_type)
-    error_message = "Only \"public\" and \"private\" are allowed values for 'existing_secrets_endpoint_type'."
+    condition     = var.existing_secrets_manager_endpoint_type == "private"
+    error_message = "Valkey supports only private endpoints for Secrets Manager. Set `existing_secrets_manager_endpoint_type` to 'private'."
   }
 }
 
