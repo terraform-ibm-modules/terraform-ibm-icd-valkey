@@ -6,15 +6,14 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
+	// "strings"
 	"testing"
+	// "sort"
+	// "strconv"
 
-	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
-	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
@@ -23,7 +22,7 @@ import (
 
 const fullyConfigurableSolutionTerraformDir = "solutions/fully-configurable"
 
-const icdType = "valkey"
+// const icdType = "valkey"
 const icdShortType = "valkey"
 
 // Use existing resource group
@@ -52,39 +51,39 @@ var sharedInfoSvc *cloudinfo.CloudInfoService
 // For Valkey, version is hardcoded to "9.0" in tests.
 //
 // func GetRegionVersions(region string) (string, string) {
-//
+
 // 	cloudInfoSvc, err := cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{
 // 		IcdRegion: region,
 // 	})
-//
+
 // 	if err != nil {
 // 		log.Fatal(err)
 // 	}
-//
+
 // 	icdAvailableVersions, err := cloudInfoSvc.GetAvailableIcdVersions(icdType)
-//
+
 // 	if err != nil {
 // 		log.Fatal(err)
 // 	}
-//
+
 // 	if len(icdAvailableVersions) == 0 {
 // 		log.Fatal("No available ICD versions found")
 // 	}
-//
+
 // 	sort.Slice(icdAvailableVersions, func(i, j int) bool {
 // 		partsI := strings.Split(icdAvailableVersions[i], ".")
 // 		partsJ := strings.Split(icdAvailableVersions[j], ".")
-//
+
 // 		majorI, _ := strconv.Atoi(partsI[0])
 // 		majorJ, _ := strconv.Atoi(partsJ[0])
-//
+
 // 		if majorI != majorJ {
 // 			return majorI < majorJ
 // 		}
-//
+
 // 		minorI := 0
 // 		minorJ := 0
-//
+
 // 		if len(partsI) >= 2 {
 // 			minorI, _ = strconv.Atoi(partsI[1])
 // 		}
@@ -93,11 +92,11 @@ var sharedInfoSvc *cloudinfo.CloudInfoService
 // 		}
 // 		return minorI < minorJ
 // 	})
-//
+
 // 	fmt.Println("version list is ", icdAvailableVersions)
 // 	latestVersion := icdAvailableVersions[len(icdAvailableVersions)-1]
 // 	oldestVersion := icdAvailableVersions[0]
-//
+
 // 	return latestVersion, oldestVersion
 // }
 

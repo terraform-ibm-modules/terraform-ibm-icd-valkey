@@ -188,26 +188,26 @@ data "ibm_database_connection" "existing_connection" {
 
 # Create new instance
 module "valkey" {
-  count                        = var.existing_valkey_instance_crn != null ? 0 : 1
-  source                       = "../.."
-  depends_on                   = [time_sleep.wait_for_authorization_policy]
-  resource_group_id            = module.resource_group.resource_group_id
-  name                         = "${local.prefix}${var.name}"
-  region                       = var.region
-  valkey_version               = var.valkey_version
+  count                         = var.existing_valkey_instance_crn != null ? 0 : 1
+  source                        = "../.."
+  depends_on                    = [time_sleep.wait_for_authorization_policy]
+  resource_group_id             = module.resource_group.resource_group_id
+  name                          = "${local.prefix}${var.name}"
+  region                        = var.region
+  valkey_version                = var.valkey_version
   skip_iam_authorization_policy = var.kms_encryption_enabled ? var.skip_valkey_kms_auth_policy : true
-  use_ibm_owned_encryption_key = local.use_ibm_owned_encryption_key
-  kms_key_crn                  = local.kms_key_crn
-  access_tags                  = var.access_tags
-  tags                         = var.resource_tags
-  members                      = var.members
-  member_host_flavor           = var.member_host_flavor
-  disk_mb                      = var.member_disk_mb
-  service_credential_names     = var.service_credential_names
-  deletion_protection          = var.deletion_protection
-  create_timeout               = var.create_timeout
-  update_timeout               = var.update_timeout
-  delete_timeout               = var.delete_timeout
+  use_ibm_owned_encryption_key  = local.use_ibm_owned_encryption_key
+  kms_key_crn                   = local.kms_key_crn
+  access_tags                   = var.access_tags
+  tags                          = var.resource_tags
+  members                       = var.members
+  member_host_flavor            = var.member_host_flavor
+  disk_mb                       = var.member_disk_mb
+  service_credential_names      = var.service_credential_names
+  deletion_protection           = var.deletion_protection
+  create_timeout                = var.create_timeout
+  update_timeout                = var.update_timeout
+  delete_timeout                = var.delete_timeout
 }
 
 locals {
@@ -288,10 +288,9 @@ locals {
 }
 
 module "secrets_manager_service_credentials" {
-  count   = length(local.secrets) > 0 && var.existing_secrets_manager_instance_crn != null ? 1 : 0
-  source  = "terraform-ibm-modules/secrets-manager/ibm//modules/secrets"
-  version = "2.15.7"
-  # converted into implicit dependency and removed explicit depends_on time_sleep.wait_for_valkey_authorization_policy for this module because of issue https://github.com/terraform-ibm-modules/terraform-ibm-icd-redis/issues/608
+  count                       = length(local.secrets) > 0 && var.existing_secrets_manager_instance_crn != null ? 1 : 0
+  source                      = "terraform-ibm-modules/secrets-manager/ibm//modules/secrets"
+  version                     = "2.15.7"
   existing_sm_instance_guid   = local.create_secrets_manager_auth_policy > 0 ? time_sleep.wait_for_valkey_authorization_policy[0].triggers["secrets_manager_guid"] : local.existing_secrets_manager_instance_guid
   existing_sm_instance_region = local.create_secrets_manager_auth_policy > 0 ? time_sleep.wait_for_valkey_authorization_policy[0].triggers["secrets_manager_region"] : local.existing_secrets_manager_instance_region
   endpoint_type               = var.existing_secrets_manager_endpoint_type
