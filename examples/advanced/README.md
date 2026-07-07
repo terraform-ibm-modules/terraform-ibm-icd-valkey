@@ -14,7 +14,6 @@ This example creates an IBM Cloud Database for Valkey instance with KMS encrypti
 The following resources are provisioned by this example:
 
 - A new resource group, if an existing one is not passed in.
-- A basic VPC and subnet.
-- A Key Protect instance with two root keys (one for data, one for backups) in the given resource group and region.
+- A Key Protect instance with one root key in the given resource group and region.
 - An instance of Databases for Valkey with KMS encryption enabled.
 - Service credentials for the database instance.

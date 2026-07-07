@@ -24,19 +24,7 @@ module "database" {
   region              = var.region
   valkey_version      = var.valkey_version
   access_tags         = var.access_tags
-  tags                = var.resource_tags
+  resource_tags       = var.resource_tags
   member_host_flavor  = var.member_host_flavor
   deletion_protection = false
-  service_credential_names = [
-    {
-      name     = "valkey_writer"
-      role     = "Writer"
-      endpoint = "private"
-    },
-    {
-      name     = "valkey_manager"
-      role     = "Manager"
-      endpoint = "private"
-    }
-  ]
 }

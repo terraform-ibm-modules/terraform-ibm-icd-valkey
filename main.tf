@@ -76,22 +76,20 @@ resource "time_sleep" "wait_for_authorization_policy" {
   create_duration = "30s"
 }
 
-# icd-versions is commented out because the /v5/ibm/deployables API does not list
-# 'valkey' in classic ICD regions, and Gen2 region endpoints (ca-mon, in-che) are
-# only reachable from within IBM Cloud's private network. Version validation is
-# handled by the IBM provider at plan/apply time.
-#
-# module "available_versions" {
-#   source   = "terraform-ibm-modules/common-utilities/ibm//modules/icd-versions"
-#   version  = "1.6.0"
-#   region   = var.region
-#   icd_type = "valkey"
-# }
-#
-# locals {
-#   icd_supported_versions = module.available_versions.supported_versions
-# }
+# Workaround:
+# Montreal does not have ICD classic endpoint, so common-utilities module will default to Toronto. This stops the module erroring.
+module "available_versions" {
+  source   = "terraform-ibm-modules/common-utilities/ibm//modules/icd-versions"
+  version  = "1.9.0"
+  region   = var.region
+  icd_type = "valkey"
+  plan     = "standard-gen2"
+  service  = "databases-for-valkey"
+}
 
+locals {
+  icd_supported_versions = module.available_versions.supported_versions
+}
 
 ########################################################################################################################
 # Valkey instance
@@ -107,7 +105,7 @@ resource "ibm_database" "valkey" {
   resource_group_id   = var.resource_group_id
   service_endpoints   = "private" # Valkey only supports private service endpoints
   deletion_protection = var.deletion_protection
-  tags                = var.tags
+  tags                = var.resource_tags
   key_protect_key     = var.kms_key_crn
 
   group {

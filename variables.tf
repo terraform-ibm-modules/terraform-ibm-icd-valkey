@@ -15,11 +15,12 @@ variable "name" {
 variable "valkey_version" {
   type        = string
   description = "Version of the Valkey instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used."
-  default     = "9.0"
+  default     = null
 
-  # Version validation against the live ICD deployables API is not possible for
-  # Valkey Gen2 — see the comment in main.tf. The IBM provider validates the version
-  # at plan/apply time and surfaces a clear error if the version is unsupported.
+  validation {
+    condition     = var.valkey_version == null ? true : contains(local.icd_supported_versions, var.valkey_version)
+    error_message = "Unsupported mongodb_version '${var.valkey_version == null ? "null" : var.valkey_version}'. Supported versions: ${join(", ", local.icd_supported_versions)}"
+  }
 }
 
 variable "region" {
@@ -72,7 +73,7 @@ variable "service_credential_names" {
   }
 }
 
-variable "tags" {
+variable "resource_tags" {
   type        = list(string)
   description = "Optional list of tags to be added to the Valkey instance."
   default     = []
@@ -121,7 +122,7 @@ variable "delete_timeout" {
 
 variable "use_ibm_owned_encryption_key" {
   type        = bool
-  description = "IBM Cloud Databases will secure your deployment's data at rest automatically with an encryption key that IBM hold. Alternatively, you may select your own Key Management System instance and encryption key (Key Protect or Hyper Protect Crypto Services) by setting this to false. If setting to false, a value must be passed for the `kms_key_crn` input."
+  description = "IBM Cloud Databases will secure your deployment's data at rest automatically with an encryption key that IBM hold. Alternatively, you may select your own Key Management System instance and encryption key (Key Protect or Key Protect Dedicated service) by setting this to false. If setting to false, a value must be passed for the `kms_key_crn` input."
   default     = true
 
   validation {
@@ -140,7 +141,7 @@ variable "use_ibm_owned_encryption_key" {
 
 variable "kms_key_crn" {
   type        = string
-  description = "The CRN of a Key Protect or Hyper Protect Crypto Services encryption key to encrypt your data. Applies only if `use_ibm_owned_encryption_key` is false."
+  description = "The CRN of a Key Protect or Key Protect Dedicated Services encryption key to encrypt your data. Applies only if `use_ibm_owned_encryption_key` is false."
   default     = null
 
   validation {
@@ -149,12 +150,12 @@ variable "kms_key_crn" {
       can(regex(".*kms.*", var.kms_key_crn)),
       can(regex(".*hs-crypto.*", var.kms_key_crn)),
     ])
-    error_message = "Value must be the KMS key CRN from a Key Protect or Hyper Protect Crypto Services instance."
+    error_message = "Value must be the KMS key CRN from a Key Protect or Key Protect Dedicated Services instance."
   }
 }
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Set to true to skip the creation of an IAM authorization policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Hyper Protect Crypto Services key provided in the `kms_key_crn` input. This policy is required in order to enable KMS encryption, so only skip creation if there is one already present in your account. No policy is created if `use_ibm_owned_encryption_key` is true."
+  description = "Set to true to skip the creation of an IAM authorization policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Key Protect Dedicated Services key provided in the `kms_key_crn` input. This policy is required in order to enable KMS encryption, so only skip creation if there is one already present in your account. No policy is created if `use_ibm_owned_encryption_key` is true."
   default     = false
 }

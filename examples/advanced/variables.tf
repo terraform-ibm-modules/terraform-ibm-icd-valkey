@@ -37,7 +37,7 @@ variable "access_tags" {
 variable "valkey_version" {
   description = "Version of the Valkey instance. If no value is passed, the current preferred version of IBM Cloud Databases is used."
   type        = string
-  default     = "9.0"
+  default     = null
 }
 
 variable "member_host_flavor" {
