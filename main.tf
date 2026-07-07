@@ -98,17 +98,17 @@ resource "time_sleep" "wait_for_authorization_policy" {
 ########################################################################################################################
 
 resource "ibm_database" "valkey_database" {
-  depends_on        = [time_sleep.wait_for_authorization_policy]
-  name              = var.name
-  plan              = "standard-gen2" # Only standard-gen2 plan is available for Valkey
-  location          = var.region
-  service           = "databases-for-valkey"
-  version           = var.valkey_version
-  resource_group_id = var.resource_group_id
-  service_endpoints = "private" # Valkey only supports private service endpoints
+  depends_on          = [time_sleep.wait_for_authorization_policy]
+  name                = var.name
+  plan                = "standard-gen2" # Only standard-gen2 plan is available for Valkey
+  location            = var.region
+  service             = "databases-for-valkey"
+  version             = var.valkey_version
+  resource_group_id   = var.resource_group_id
+  service_endpoints   = "private" # Valkey only supports private service endpoints
   deletion_protection = var.deletion_protection
-  tags              = var.tags
-  key_protect_key   = var.kms_key_crn
+  tags                = var.tags
+  key_protect_key     = var.kms_key_crn
 
   group {
     group_id = "member" # Only member type is allowed for IBM Cloud Databases

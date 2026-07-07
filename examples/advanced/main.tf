@@ -90,10 +90,10 @@ module "icd_valkey" {
   # remove the above line and uncomment the below 2 lines to consume the module from the registry
   # source  = "terraform-ibm-modules/icd-valkey/ibm"
   # version = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
-  resource_group_id = module.resource_group.resource_group_id
-  valkey_version    = var.valkey_version
-  name              = "${var.prefix}-valkey"
-  region            = var.region
+  resource_group_id            = module.resource_group.resource_group_id
+  valkey_version               = var.valkey_version
+  name                         = "${var.prefix}-valkey"
+  region                       = var.region
   use_ibm_owned_encryption_key = false
   kms_key_crn                  = module.key_protect_all_inclusive.keys["icd.${local.data_key_name}"].crn
   service_credential_names = [
