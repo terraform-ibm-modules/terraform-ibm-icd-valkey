@@ -82,7 +82,7 @@ You need the following permissions to run this module.
 
 | Name | Type |
 |------|------|
-| [ibm_database.valkey_database](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database) | resource |
+| [ibm_database.valkey](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database) | resource |
 | [ibm_iam_authorization_policy.kms_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
 | [ibm_resource_key.service_credentials](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_key) | resource |
 | [ibm_resource_tag.access_tag](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_tag) | resource |
@@ -104,7 +104,7 @@ You need the following permissions to run this module.
 | <a name="input_name"></a> [name](#input\_name) | The name to give the Valkey instance. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region where you want to deploy your instance. | `string` | `"eu-de"` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the Valkey instance will be created. | `string` | n/a | yes |
-| <a name="input_service_credential_names"></a> [service\_credential\_names](#input\_service\_credential\_names) | List of service credentials to create for the database, including name and optionally role. Endpoint is always private for Valkey. | <pre>list(object({<br/>    name     = string<br/>    role     = optional(string, "Viewer")<br/>    endpoint = optional(string, "private")<br/>  }))</pre> | `[]` | no |
+| <a name="input_service_credential_names"></a> [service\_credential\_names](#input\_service\_credential\_names) | List of service credentials to create for the database, including name and optionally role. Endpoint is always private for Valkey. | <pre>list(object({<br/>    name     = string<br/>    role     = optional(string, "Writer")<br/>    endpoint = optional(string, "private")<br/>  }))</pre> | `[]` | no |
 | <a name="input_skip_iam_authorization_policy"></a> [skip\_iam\_authorization\_policy](#input\_skip\_iam\_authorization\_policy) | Set to true to skip the creation of an IAM authorization policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Hyper Protect Crypto Services key provided in the `kms_key_crn` input. This policy is required in order to enable KMS encryption, so only skip creation if there is one already present in your account. No policy is created if `use_ibm_owned_encryption_key` is true. | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Optional list of tags to be added to the Valkey instance. | `list(string)` | `[]` | no |
 | <a name="input_update_timeout"></a> [update\_timeout](#input\_update\_timeout) | A database update may require a longer timeout for the update to complete. The default is 120 minutes. Set this variable to change the `update` value in the `timeouts` block. [Learn more](https://developer.hashicorp.com/terraform/language/resources/syntax#operation-timeouts). | `string` | `"120m"` | no |

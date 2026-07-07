@@ -29,23 +29,13 @@ module "database" {
   deletion_protection = false
   service_credential_names = [
     {
-      name     = "valkey_admin"
-      role     = "Administrator"
+      name     = "valkey_writer"
+      role     = "Writer"
       endpoint = "private"
     },
     {
-      name     = "valkey_operator"
-      role     = "Operator"
-      endpoint = "private"
-    },
-    {
-      name     = "valkey_viewer"
-      role     = "Viewer"
-      endpoint = "private"
-    },
-    {
-      name     = "valkey_editor"
-      role     = "Editor"
+      name     = "valkey_manager"
+      role     = "Manager"
       endpoint = "private"
     }
   ]

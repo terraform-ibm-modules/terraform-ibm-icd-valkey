@@ -98,23 +98,13 @@ module "icd_valkey" {
   kms_key_crn                  = module.key_protect_all_inclusive.keys["icd.${local.data_key_name}"].crn
   service_credential_names = [
     {
-      name     = "valkey_admin"
-      role     = "Administrator"
+      name     = "valkey_writer"
+      role     = "Writer"
       endpoint = "private"
     },
     {
-      name     = "valkey_operator"
-      role     = "Operator"
-      endpoint = "private"
-    },
-    {
-      name     = "valkey_viewer"
-      role     = "Viewer"
-      endpoint = "private"
-    },
-    {
-      name     = "valkey_editor"
-      role     = "Editor"
+      name     = "valkey_manager"
+      role     = "Manager"
       endpoint = "private"
     }
   ]

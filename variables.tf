@@ -55,15 +55,15 @@ variable "member_host_flavor" {
 variable "service_credential_names" {
   type = list(object({
     name     = string
-    role     = optional(string, "Viewer")
+    role     = optional(string, "Writer")
     endpoint = optional(string, "private")
   }))
   description = "List of service credentials to create for the database, including name and optionally role. Endpoint is always private for Valkey."
   default     = []
 
   validation {
-    condition     = alltrue([for credential in var.service_credential_names : contains(["Administrator", "Operator", "Viewer", "Editor"], credential.role)])
-    error_message = "`service_credential_names` role must be one of the following: `Administrator`, `Operator`, `Viewer` or `Editor`."
+    condition     = alltrue([for credential in var.service_credential_names : contains(["Writer", "Manager"], credential.role)])
+    error_message = "`service_credential_names` role must be one of the following: `Writer` or `Manager`."
   }
 
   validation {

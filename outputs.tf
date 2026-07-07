@@ -4,22 +4,22 @@
 
 output "id" {
   description = "Valkey instance id"
-  value       = ibm_database.valkey_database.id
+  value       = ibm_database.valkey.id
 }
 
 output "version" {
   description = "Valkey instance version"
-  value       = ibm_database.valkey_database.version
+  value       = ibm_database.valkey.version
 }
 
 output "guid" {
   description = "Valkey instance guid"
-  value       = ibm_database.valkey_database.guid
+  value       = ibm_database.valkey.guid
 }
 
 output "crn" {
   description = "Valkey instance crn"
-  value       = ibm_database.valkey_database.resource_crn
+  value       = ibm_database.valkey.resource_crn
 }
 
 output "service_credentials_json" {
@@ -41,5 +41,5 @@ output "cbr_rule_ids" {
 
 output "adminuser" {
   description = "Database admin user name"
-  value       = ibm_database.valkey_database.adminuser
+  value       = ibm_database.valkey.adminuser
 }

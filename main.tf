@@ -97,7 +97,7 @@ resource "time_sleep" "wait_for_authorization_policy" {
 # Valkey instance
 ########################################################################################################################
 
-resource "ibm_database" "valkey_database" {
+resource "ibm_database" "valkey" {
   depends_on          = [time_sleep.wait_for_authorization_policy]
   name                = var.name
   plan                = "standard-gen2" # Only standard-gen2 plan is available for Valkey
@@ -139,7 +139,7 @@ resource "ibm_database" "valkey_database" {
 
 resource "ibm_resource_tag" "access_tag" {
   count       = length(var.access_tags) == 0 ? 0 : 1
-  resource_id = ibm_database.valkey_database.resource_crn
+  resource_id = ibm_database.valkey.resource_crn
   tags        = var.access_tags
   tag_type    = "access"
 }
@@ -164,7 +164,7 @@ module "cbr_rule" {
       },
       {
         name     = "serviceInstance"
-        value    = ibm_database.valkey_database.id
+        value    = ibm_database.valkey.id
         operator = "stringEquals"
       },
       {
@@ -190,10 +190,11 @@ module "cbr_rule" {
 resource "ibm_resource_key" "service_credentials" {
   for_each             = { for key in var.service_credential_names : key.name => key }
   name                 = each.key
-  role                 = each.value.role
-  resource_instance_id = ibm_database.valkey_database.id
+  role                 = null
+  resource_instance_id = ibm_database.valkey.id
   parameters = {
     service-endpoints = each.value.endpoint
+    role_crn          = "crn:v1:bluemix:public:iam::::role:${each.value.role}"
   }
 }
 
@@ -205,14 +206,13 @@ locals {
   } : null
 
   service_credentials_object = length(var.service_credential_names) > 0 ? {
-    hostname    = ibm_resource_key.service_credentials[var.service_credential_names[0].name].credentials["connection.valkey.hosts.0.hostname"]
-    certificate = ibm_resource_key.service_credentials[var.service_credential_names[0].name].credentials["connection.valkey.certificate.certificate_base64"]
-    port        = ibm_resource_key.service_credentials[var.service_credential_names[0].name].credentials["connection.valkey.hosts.0.port"]
+    hostname = ibm_resource_key.service_credentials[var.service_credential_names[0].name].credentials["connection.valkey.hosts.0.hostname"]
+    port     = ibm_resource_key.service_credentials[var.service_credential_names[0].name].credentials["connection.valkey.hosts.0.port"]
     credentials = {
       for service_credential in ibm_resource_key.service_credentials :
       service_credential["name"] => {
-        username = service_credential.credentials["connection.valkey.authentication.username"]
-        password = service_credential.credentials["connection.valkey.authentication.password"]
+        username = service_credential.credentials["username"]
+        password = service_credential.credentials["password"]
       }
     }
   } : null
