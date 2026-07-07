@@ -25,7 +25,7 @@ variable "valkey_version" {
 variable "region" {
   type        = string
   description = "The region where you want to deploy your instance."
-  default     = "us-south"
+  default     = "eu-de"
 }
 
 ##############################################################################
