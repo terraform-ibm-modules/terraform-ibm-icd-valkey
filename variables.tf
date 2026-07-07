@@ -75,13 +75,13 @@ variable "service_credential_names" {
 
 variable "resource_tags" {
   type        = list(string)
-  description = "Optional list of tags to be added to the Valkey instance."
+  description = "The list of resource tags to be added to the Databases for Valkey instance."
   default     = []
 }
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the Valkey instance created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details"
+  description = "Add access management tags to the resources created to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console)."
   default     = []
 
   validation {
