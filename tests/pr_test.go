@@ -34,7 +34,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testschematic.TestSc
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
-		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "region", Value: "eu-de", DataType: "string"},
 		{Name: "resource_group", Value: resourceGroup, DataType: "string"},
 		{Name: "member_host_flavor", Value: "bx3d.4x20", DataType: "string"},
 	}
