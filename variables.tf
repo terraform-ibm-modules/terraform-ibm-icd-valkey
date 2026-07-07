@@ -158,31 +158,3 @@ variable "skip_iam_authorization_policy" {
   description = "Set to true to skip the creation of an IAM authorization policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Hyper Protect Crypto Services key provided in the `kms_key_crn` input. This policy is required in order to enable KMS encryption, so only skip creation if there is one already present in your account. No policy is created if `use_ibm_owned_encryption_key` is true."
   default     = false
 }
-
-##############################################################
-# Context-based restriction (CBR)
-##############################################################
-
-variable "cbr_rules" {
-  type = list(object({
-    description = string
-    account_id  = string
-    rule_contexts = list(object({
-      attributes = optional(list(object({
-        name  = string
-        value = string
-    }))) }))
-    enforcement_mode = string
-    tags = optional(list(object({
-      name  = string
-      value = string
-    })))
-  }))
-  description = "The context-based restrictions rule to create. Only one rule is allowed."
-  default     = []
-  # Validation happens in the rule module
-  validation {
-    condition     = length(var.cbr_rules) <= 1
-    error_message = "Only one CBR rule is allowed."
-  }
-}

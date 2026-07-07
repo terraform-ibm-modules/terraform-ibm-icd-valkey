@@ -34,11 +34,6 @@ output "service_credentials_object" {
   sensitive   = true
 }
 
-output "cbr_rule_ids" {
-  description = "CBR rule ids created to restrict Valkey"
-  value       = module.cbr_rule[*].rule_id
-}
-
 output "adminuser" {
   description = "Database admin user name"
   value       = ibm_database.valkey.adminuser

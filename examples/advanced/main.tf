@@ -59,29 +59,6 @@ module "key_protect_all_inclusive" {
 }
 
 ##############################################################################
-# Get Cloud Account ID
-##############################################################################
-
-data "ibm_iam_account_settings" "iam_account_settings" {
-}
-
-##############################################################################
-# Create CBR Zone
-##############################################################################
-
-module "cbr_zone" {
-  source           = "terraform-ibm-modules/cbr/ibm//modules/cbr-zone-module"
-  version          = "1.36.4"
-  name             = "${var.prefix}-VPC-network-zone"
-  zone_description = "CBR Network zone containing VPC"
-  account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
-  addresses = [{
-    type  = "vpc", # to bind a specific vpc to the zone
-    value = ibm_is_vpc.example_vpc.crn,
-  }]
-}
-
-##############################################################################
 # Valkey Instance
 ##############################################################################
 
@@ -111,32 +88,4 @@ module "icd_valkey" {
   access_tags         = var.access_tags
   member_host_flavor  = var.member_host_flavor
   deletion_protection = false
-  cbr_rules = [
-    {
-      description      = "sample rule"
-      enforcement_mode = "enabled"
-      account_id       = data.ibm_iam_account_settings.iam_account_settings.account_id
-      tags = [
-        {
-          name  = "environment"
-          value = "${var.prefix}-test"
-        },
-        {
-          name  = "terraform-rule"
-          value = "allow-${var.prefix}-vpc-to-${var.prefix}-valkey"
-        }
-      ]
-      rule_contexts = [{
-        attributes = [
-          {
-            "name" : "endpointType",
-            "value" : "private"
-          },
-          {
-            name  = "networkZoneId"
-            value = module.cbr_zone.zone_id
-        }]
-      }]
-    }
-  ]
 }

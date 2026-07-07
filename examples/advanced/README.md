@@ -9,7 +9,7 @@
 </p>
 <!-- END SCHEMATICS DEPLOY HOOK -->
 
-This example creates an IBM Cloud Database for Valkey instance with KMS encryption enabled and CBR rules configured.
+This example creates an IBM Cloud Database for Valkey instance with KMS encryption enabled configured.
 
 The following resources are provisioned by this example:
 
@@ -18,4 +18,3 @@ The following resources are provisioned by this example:
 - A Key Protect instance with two root keys (one for data, one for backups) in the given resource group and region.
 - An instance of Databases for Valkey with KMS encryption enabled.
 - Service credentials for the database instance.
-- A context-based restriction (CBR) rule to only allow Valkey to be accessible from within the VPC.
