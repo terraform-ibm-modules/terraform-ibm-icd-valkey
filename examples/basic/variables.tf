@@ -1,39 +1,47 @@
-########################################################################################################################
-# Input variables
-########################################################################################################################
-
-#
-# Module developer tips:
-#   - Examples are references that consumers can use to see how the module can be consumed. They are not designed to be
-#     flexible re-usable solutions for general consumption, so do not expose any more variables here and instead hard
-#     code things in the example main.tf with code comments explaining the different configurations.
-#   - For the same reason as above, do not add default values to the example inputs.
-#
-
 variable "ibmcloud_api_key" {
   type        = string
-  description = "The IBM Cloud API Key."
+  description = "The IBM Cloud API Key"
   sensitive   = true
 }
 
 variable "region" {
   type        = string
-  description = "Region to provision all resources created by this example."
+  description = "Region to provision all resources created by this example"
+  default     = "eu-de"
 }
 
 variable "prefix" {
   type        = string
-  description = "A string value to prefix to all resources created by this example."
+  description = "Prefix to append to all resources created by this example"
+  default     = "valkey"
 }
 
 variable "resource_group" {
   type        = string
-  description = "The name of an existing resource group to provision resources in to. If not set a new resource group will be created using the prefix variable."
+  description = "An existing resource group name to use for this example, if unset a new resource group will be created"
   default     = null
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "A list of access tags to apply to the Valkey instance created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details"
+  default     = []
 }
 
 variable "resource_tags" {
   type        = list(string)
-  description = "List of resource tag to associate with all resource instances created by this example."
+  description = "Optional list of tags to be added to created resources"
   default     = []
+}
+
+variable "valkey_version" {
+  type        = string
+  description = "Version of the Valkey instance to provision. If no value is passed, the current preferred version of IBM Cloud Databases is used."
+  default     = "9.0"
+}
+
+variable "member_host_flavor" {
+  type        = string
+  description = "The host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  default     = "bx3d.4x20"
 }

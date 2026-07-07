@@ -11,18 +11,9 @@ _extends: repo-settings:.github/common-settings-v2.yml
 #
 repository:
   # See https://terraform-ibm-modules.github.io/documentation/#/implementation-guidelines?id=module-names-and-descriptions
+  name: terraform-ibm-icd-valkey
 
-  # By changing this field, you rename the repository.
-
-  # Uncomment this name property and set the name to the current repo name.
-  # name: ""
-
-  # The description is displayed under the repository name on the
-  # organization page and in the 'About' section of the repository.
-
-  # Uncomment this description property
-  # and update the description to the current repo description.
-  # description: ""
+  description: "Implements an instance of IBM Cloud Databases for Valkey."
 
   # Use a comma-separated list of topics to set on the repo (ensure not to use any caps in the topic string).
-  topics: terraform, ibm-cloud, terraform-module, core-team
+  topics: core-team, terraform, ibm-cloud, terraform-module, icd, valkey, icd-valkey

@@ -1,30 +1,40 @@
-########################################################################################################################
+##############################################################################
 # Outputs
-########################################################################################################################
+##############################################################################
 
-#
-# Developer tips:
-#   - Below are some good practise sample outputs
-#   - They should be updated for outputs applicable to the module being added
-#   - Use variable validation when possible
-#
+output "id" {
+  description = "Valkey instance id"
+  value       = ibm_database.valkey.id
+}
 
-output "account_id" {
-  description = "An alpha-numeric value identifying the account ID."
-  value       = ibm_resource_instance.cos_instance.account_id
+output "version" {
+  description = "Valkey instance version"
+  value       = ibm_database.valkey.version
 }
 
 output "guid" {
-  description = "The GUID of the resource instance."
-  value       = ibm_resource_instance.cos_instance.guid
-}
-
-output "id" {
-  description = "The unique identifier of the resource instance."
-  value       = ibm_resource_instance.cos_instance.id
+  description = "Valkey instance guid"
+  value       = ibm_database.valkey.guid
 }
 
 output "crn" {
-  description = "The CRN of the resource instance."
-  value       = ibm_resource_instance.cos_instance.crn
+  description = "Valkey instance crn"
+  value       = ibm_database.valkey.resource_crn
+}
+
+output "service_credentials_json" {
+  description = "Service credentials json map"
+  value       = local.service_credentials_json
+  sensitive   = true
+}
+
+output "service_credentials_object" {
+  description = "Service credentials object"
+  value       = local.service_credentials_object
+  sensitive   = true
+}
+
+output "adminuser" {
+  description = "Database admin user name"
+  value       = ibm_database.valkey.adminuser
 }
