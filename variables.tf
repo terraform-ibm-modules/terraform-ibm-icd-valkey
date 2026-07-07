@@ -19,13 +19,13 @@ variable "valkey_version" {
 
   validation {
     condition     = var.valkey_version == null ? true : contains(local.icd_supported_versions, var.valkey_version)
-    error_message = "Unsupported mongodb_version '${var.valkey_version == null ? "null" : var.valkey_version}'. Supported versions: ${join(", ", local.icd_supported_versions)}"
+    error_message = "Unsupported valkey_version '${var.valkey_version == null ? "null" : var.valkey_version}'. Supported versions: ${join(", ", local.icd_supported_versions)}"
   }
 }
 
 variable "region" {
   type        = string
-  description = "The region where you want to deploy your instance."
+  description = "The region where you want to deploy your instance. For more information on which regions Gen2 is available, see [Feature differentiators](https://cloud.ibm.com/docs/cloud-databases-gen2?topic=cloud-databases-gen2-overview-gen1-gen2#feature-differentiators)."
   default     = "eu-de"
 }
 
@@ -147,8 +147,7 @@ variable "kms_key_crn" {
   validation {
     condition = anytrue([
       var.kms_key_crn == null,
-      can(regex(".*kms.*", var.kms_key_crn)),
-      can(regex(".*hs-crypto.*", var.kms_key_crn)),
+      can(regex(".*kms.*", var.kms_key_crn))
     ])
     error_message = "Value must be the KMS key CRN from a Key Protect or Key Protect Dedicated Services instance."
   }
