@@ -16,4 +16,4 @@ repository:
   description: "Implements an instance of IBM Cloud Databases for Valkey."
 
   # Use a comma-separated list of topics to set on the repo (ensure not to use any caps in the topic string).
-  topics: core-team, terraform, ibm-cloud, terraform-module, icd, valkey, icd-valkey
+  topics: core-team, terraform, ibm-cloud, terraform-module, icd, valkey, icd-valkey, deployable-architecture
