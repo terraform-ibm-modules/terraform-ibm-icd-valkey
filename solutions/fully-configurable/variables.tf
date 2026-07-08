@@ -50,7 +50,7 @@ variable "name" {
 variable "region" {
   description = "The region where you want to deploy your instance."
   type        = string
-  default     = "us-south"
+  default     = "eu-de"
 
   validation {
     condition     = var.existing_valkey_instance_crn != null && var.region != local.existing_valkey_region ? false : true
@@ -207,17 +207,6 @@ variable "existing_kms_key_crn" {
   }
 }
 
-variable "kms_endpoint_type" {
-  type        = string
-  description = "The type of endpoint to use for communicating with the Key Protect instance. Applies only if `existing_kms_key_crn` is not specified."
-  default     = "private"
-
-  validation {
-    condition     = var.kms_endpoint_type == "private"
-    error_message = "Valkey supports only private endpoints for Key Protect. Set kms_endpoint_type to 'private'."
-  }
-}
-
 variable "skip_valkey_kms_auth_policy" {
   type        = bool
   description = "Whether to create an IAM authorization policy that permits all Databases for Valkey instances in the resource group to read the encryption key from the Hyper Protect Crypto Services instance specified in the `existing_kms_instance_crn` variable."
@@ -243,17 +232,6 @@ variable "key_name" {
   description = "The name for the key created for the Databases for Valkey key. Applies only if not specifying an existing key. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
 }
 
-variable "provider_visibility" {
-  description = "Set the visibility value for the IBM terraform provider. Databases for Valkey only supports private endpoints, so this value must be set to `private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
-  type        = string
-  default     = "private"
-
-  validation {
-    condition     = var.provider_visibility == "private"
-    error_message = "Databases for Valkey only supports private endpoints. The provider_visibility value must be 'private'."
-  }
-}
-
 #############################################################################
 # Secrets Manager Service Credentials
 #############################################################################
@@ -269,17 +247,6 @@ variable "existing_secrets_manager_instance_crn" {
       can(regex("^crn:v\\d:(.*:){2}secrets-manager:(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.existing_secrets_manager_instance_crn))
     ])
     error_message = "The value provided for 'existing_secrets_manager_instance_crn' is not valid."
-  }
-}
-
-variable "existing_secrets_manager_endpoint_type" {
-  type        = string
-  description = "The endpoint type to use if `existing_secrets_manager_instance_crn` is specified."
-  default     = "private"
-
-  validation {
-    condition     = var.existing_secrets_manager_endpoint_type == "private"
-    error_message = "Valkey supports only private endpoints for Secrets Manager. Set `existing_secrets_manager_endpoint_type` to 'private'."
   }
 }
 
@@ -327,4 +294,42 @@ variable "skip_valkey_secrets_manager_auth_policy" {
   type        = bool
   default     = false
   description = "Whether an IAM authorization policy is created for Secrets Manager instance to create a service credential secrets for Databases for Valkey. If set to false, the Secrets Manager instance passed by the user is granted the Key Manager access to the Valkey instance created by the Deployable Architecture. Set to `true` to use an existing policy. The value of this is ignored if any value for 'existing_secrets_manager_instance_crn' is not passed."
+}
+
+##############################################################
+# Endpoint Configuration
+##############################################################
+
+
+variable "provider_visibility" {
+  description = "Set the visibility value for the IBM terraform provider. Databases for Valkey only supports private endpoints, so this value must be set to `private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
+  type        = string
+  default     = "private"
+
+  validation {
+    condition     = var.provider_visibility == "private"
+    error_message = "Databases for Valkey only supports private endpoints. The provider_visibility value must be 'private'."
+  }
+}
+
+variable "kms_endpoint_type" {
+  type        = string
+  description = "The type of endpoint to use for communicating with the Key Protect instance. Applies only if `existing_kms_key_crn` is not specified."
+  default     = "private"
+
+  validation {
+    condition     = var.kms_endpoint_type == "private"
+    error_message = "Valkey supports only private endpoints for Key Protect. Set kms_endpoint_type to 'private'."
+  }
+}
+
+variable "existing_secrets_manager_endpoint_type" {
+  type        = string
+  description = "The endpoint type to use if `existing_secrets_manager_instance_crn` is specified."
+  default     = "private"
+
+  validation {
+    condition     = var.existing_secrets_manager_endpoint_type == "private"
+    error_message = "Valkey supports only private endpoints for Secrets Manager. Set `existing_secrets_manager_endpoint_type` to 'private'."
+  }
 }

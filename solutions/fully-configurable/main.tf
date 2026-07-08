@@ -62,14 +62,14 @@ module "kms" {
 module "kms_instance_crn_parser" {
   count   = var.existing_kms_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.1"
+  version = "1.9.0"
   crn     = var.existing_kms_instance_crn
 }
 
 module "kms_key_crn_parser" {
   count   = var.existing_kms_key_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.1"
+  version = "1.9.0"
   crn     = var.existing_kms_key_crn
 }
 
@@ -152,7 +152,7 @@ resource "time_sleep" "wait_for_authorization_policy" {
 module "valkey_instance_crn_parser" {
   count   = var.existing_valkey_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.1"
+  version = "1.9.0"
   crn     = var.existing_valkey_instance_crn
 }
 
@@ -168,18 +168,6 @@ data "ibm_resource_instance" "existing_instance_resource" {
   identifier = local.existing_valkey_guid
 }
 
-output "existing_valkey_guid" {
-  value = local.existing_valkey_guid
-}
-
-output "existing_valkey_region" {
-  value = local.existing_valkey_region
-}
-
-output "existing_instance_resource" {
-  value = data.ibm_resource_instance.existing_instance_resource
-}
-
 # Lookup details of existing instance
 data "ibm_database" "existing_db_instance" {
   count             = var.existing_valkey_instance_crn != null ? 1 : 0
@@ -187,15 +175,6 @@ data "ibm_database" "existing_db_instance" {
   resource_group_id = data.ibm_resource_instance.existing_instance_resource[0].resource_group_id
   location          = var.region
   service           = "databases-for-valkey"
-}
-
-# Lookup existing instance connection details
-data "ibm_database_connection" "existing_connection" {
-  count         = var.existing_valkey_instance_crn != null ? 1 : 0
-  endpoint_type = "private"
-  deployment_id = data.ibm_database.existing_db_instance[0].id
-  user_id       = data.ibm_database.existing_db_instance[0].adminuser
-  user_type     = "database"
 }
 
 # Create new instance
@@ -211,7 +190,7 @@ module "valkey" {
   use_ibm_owned_encryption_key  = local.use_ibm_owned_encryption_key
   kms_key_crn                   = local.kms_key_crn
   access_tags                   = var.access_tags
-  resource_tags                          = var.resource_tags
+  resource_tags                 = var.resource_tags
   members                       = var.members
   member_host_flavor            = var.member_host_flavor
   disk_mb                       = var.member_disk_mb
@@ -223,11 +202,11 @@ module "valkey" {
 }
 
 locals {
-  valkey_guid     = var.existing_valkey_instance_crn != null ? data.ibm_database.existing_db_instance[0].guid : module.valkey[0].guid
-  valkey_id       = var.existing_valkey_instance_crn != null ? data.ibm_database.existing_db_instance[0].id : module.valkey[0].id
-  valkey_version  = var.existing_valkey_instance_crn != null ? data.ibm_database.existing_db_instance[0].version : module.valkey[0].version
-  valkey_crn      = var.existing_valkey_instance_crn != null ? var.existing_valkey_instance_crn : module.valkey[0].crn
-  }
+  valkey_guid    = var.existing_valkey_instance_crn != null ? data.ibm_database.existing_db_instance[0].guid : module.valkey[0].guid
+  valkey_id      = var.existing_valkey_instance_crn != null ? data.ibm_database.existing_db_instance[0].id : module.valkey[0].id
+  valkey_version = var.existing_valkey_instance_crn != null ? data.ibm_database.existing_db_instance[0].version : module.valkey[0].version
+  valkey_crn     = var.existing_valkey_instance_crn != null ? var.existing_valkey_instance_crn : module.valkey[0].crn
+}
 
 #######################################################################################################################
 # Secrets management
@@ -241,7 +220,7 @@ locals {
 module "sm_instance_crn_parser" {
   count   = var.existing_secrets_manager_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.1"
+  version = "1.9.0"
   crn     = var.existing_secrets_manager_instance_crn
 }
 

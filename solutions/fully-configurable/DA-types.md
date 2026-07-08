@@ -16,7 +16,7 @@ You can specify a set of IAM credentials to connect to the database with the `se
 ### Options for service_credential_names
 
 - `name` (required): A unique human-readable name that identifies this resource key.
-- `role` (optional, default = `Viewer`): The IAM service role assigned to the credential. Valid values are `Administrator`, `Operator`, `Viewer`, and `Editor`.
+- `role` (optional, default = `Writer`): The IAM service role assigned to the credential. Valid values are `Writer` and `Manager`.
 - `endpoint` (optional, default = `private`): The endpoint type for the resource key. Valid value is `private` (Valkey only supports private endpoints).
 
 ### Example service credentials
@@ -24,13 +24,13 @@ You can specify a set of IAM credentials to connect to the database with the `se
 ```hcl
 [
   {
-    "name": "valkey-admin-resource-key",
-    "role": "Administrator",
+    "name": "valkey-writer-resource-key",
+    "role": "Writer",
     "endpoint": "private"
   },
   {
-    "name": "valkey-viewer-resource-key",
-    "role": "Viewer"
+    "name": "valkey-manager-resource-key",
+    "role": "Manager"
   }
 ]
 ```

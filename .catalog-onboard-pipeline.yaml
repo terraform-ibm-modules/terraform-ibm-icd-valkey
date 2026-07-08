@@ -4,7 +4,7 @@ offerings:
   - name: deploy-arch-ibm-icd-valkey
     kind: solution
     catalog_id: 7df1e4ca-d54c-4fd0-82ce-3d13247308cd
-    offering_id: 8dc75e42-ec8f-4103-a41b-8f41e4562e01
+    offering_id: 7a47cf14-91d1-435a-a153-bfb9adaa00e1
     variations:
       - name: fully-configurable
         mark_ready: true
