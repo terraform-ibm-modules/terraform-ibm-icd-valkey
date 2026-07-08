@@ -135,18 +135,12 @@
             {
               "key": "region",
               "required": true,
-              "custom_config": {
-                "type": "region",
-                "grouping": "deployment",
-                "original_grouping": "deployment",
-                "config_constraints": {
-                  "filterString": "service:databases-for-valkey-group",
-                  "showKinds": [
-                    "region",
-                    "dc"
-                  ]
+              "options": [
+                {
+                  "displayname": "Frankfurt (eu-de)",
+                  "value": "eu-de"
                 }
-              }
+              ]
             },
             {
               "key": "valkey_version",
