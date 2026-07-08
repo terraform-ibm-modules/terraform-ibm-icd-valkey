@@ -171,7 +171,7 @@ func TestPlanValidation(t *testing.T) {
 		"prefix":                       options.Prefix,
 		"region":                       region,
 		"valkey_version":               valkeyVersion,
-		"provider_visibility":          "private", // Valkey only supports private endpoints
+		"provider_visibility":          "public",
 		"existing_resource_group_name": resourceGroup,
 	}
 

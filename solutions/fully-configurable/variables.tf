@@ -113,7 +113,7 @@ variable "service_credential_names" {
   description = "A list of service credential resource keys to be created for the Valkey instance. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/blob/main/solutions/fully-configurable/DA-types.md#svc-credential-name)"
   type = list(object({
     name     = string
-    role     = optional(string, "Viewer")
+    role     = optional(string, "Writer")
     endpoint = optional(string, "private")
   }))
   default = []
@@ -307,8 +307,8 @@ variable "provider_visibility" {
   default     = "private"
 
   validation {
-    condition     = var.provider_visibility == "private"
-    error_message = "Databases for Valkey only supports private endpoints. The provider_visibility value must be 'private'."
+    condition     = contains(["public", "private", "public-and-private"], var.provider_visibility)
+    error_message = "Invalid visibility option. Allowed values are 'public', 'private', or 'public-and-private'."
   }
 }
 
