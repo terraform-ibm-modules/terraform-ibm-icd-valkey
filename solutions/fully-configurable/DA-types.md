@@ -76,7 +76,7 @@ The following example includes all the configuration options for four service cr
     "service_credentials": [                                              # pragma: allowlist secret
       {
         "secret_name": "cred-1"
-        "service_credentials_source_service_role_crn":  "crn:v1:bluemix:public:iam::::role:Editor"
+        "service_credentials_source_service_role_crn":  "crn:v1:bluemix:public:iam::::role:Writer"
         "secret_labels": ["test-editor-1", "test-editor-2"]
         "secret_auto_rotation": true
         "secret_auto_rotation_unit": "day"
@@ -86,7 +86,7 @@ The following example includes all the configuration options for four service cr
       },
       {
         "secret_name": "cred-2"
-        "service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Viewer"
+        "service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Manager"
       }
     ]
   },
@@ -95,7 +95,7 @@ The following example includes all the configuration options for four service cr
     "service_credentials": [                                              # pragma: allowlist secret
       {
         "secret_name": "cred-3"
-        "service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Viewer"
+        "service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Writer"
       }
     ]
   }
