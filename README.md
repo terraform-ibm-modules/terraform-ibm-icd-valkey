@@ -29,6 +29,11 @@ This module implements an instance of IBM Cloud Databases for Valkey.
     </ul>
     ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
   </li>
+  <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/tree/main/solutions">Deployable Architectures</a>
+    <ul>
+      <li><a href="https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/tree/main/solutions/fully-configurable">Cloud automation for Valkey (Fully configurable)</a></li>
+    </ul>
+  </li>
   <li><a href="#contributing">Contributing</a></li>
 </ul>
 <!-- END OVERVIEW HOOK -->
