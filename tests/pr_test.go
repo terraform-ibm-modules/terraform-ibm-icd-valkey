@@ -240,12 +240,12 @@ func TestRunFullyConfigurableSolutionSchematics(t *testing.T) {
 			"secret_group_name": fmt.Sprintf("%s-secret-group", options.Prefix),
 			"service_credentials": []map[string]string{
 				{
-					"secret_name": fmt.Sprintf("%s-cred-reader", options.Prefix),
-					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Viewer",
+					"secret_name": fmt.Sprintf("%s-cred-writer", options.Prefix),
+					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Writer",
 				},
 				{
-					"secret_name": fmt.Sprintf("%s-cred-writer", options.Prefix),
-					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Editor",
+					"secret_name": fmt.Sprintf("%s-cred-manager", options.Prefix),
+					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Manager",
 				},
 			},
 		},
@@ -311,12 +311,12 @@ func TestRunFullyConfigurableWithKMSUpgradeSolution(t *testing.T) {
 			"secret_group_name": fmt.Sprintf("%s-secret-group", options.Prefix),
 			"service_credentials": []map[string]string{
 				{
-					"secret_name": fmt.Sprintf("%s-cred-reader", options.Prefix),
-					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Viewer",
+					"secret_name": fmt.Sprintf("%s-cred-writer", options.Prefix),
+					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Writer",
 				},
 				{
-					"secret_name": fmt.Sprintf("%s-cred-writer", options.Prefix),
-					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Editor",
+					"secret_name": fmt.Sprintf("%s-cred-manager", options.Prefix),
+					"service_credentials_source_service_role_crn": "crn:v1:bluemix:public:iam::::role:Manager",
 				},
 			},
 		},
