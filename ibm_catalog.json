@@ -63,7 +63,8 @@
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "service_name": "databases-for-valkey"
+              "service_name": "databases-for-valkey",
+              "notes": "Required to configure a Databases for Valkey instance."
             },
             {
               "role_crns": [
