@@ -24,8 +24,7 @@ import (
 // Use existing resource group
 const resourceGroup = "geretain-test-valkey"
 
-// const icdType = "valkey"
-const icdShortType = "valkey"
+const icdShortType = "valk"
 
 const basicExampleDir = "examples/basic"
 const advancedExampleDir = "examples/advanced"
@@ -52,7 +51,6 @@ func GetRegionVersions(region string) (string, string) {
 		log.Fatal(err)
 	}
 
-	// icdAvailableVersions, err := cloudInfoSvc.GetAvailableIcdVersions(icdType)
 	icdAvailableVersions, err := cloudInfoSvc.GetAvailableIcdVersionsGen2("databases-for-valkey", "standard-gen2", region) // this function takes service, plan and region as arguments in this specific order
 
 	if err != nil {
