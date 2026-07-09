@@ -135,12 +135,18 @@
             {
               "key": "region",
               "required": true,
-              "options": [
-                {
-                  "displayname": "Frankfurt (eu-de)",
-                  "value": "eu-de"
+              "default_value": "eu-de",
+              "custom_config": {
+                "type": "region",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "showKinds": [
+                    "region",
+                    "dc"
+                  ]
                 }
-              ]
+              }
             },
             {
               "key": "valkey_version",
