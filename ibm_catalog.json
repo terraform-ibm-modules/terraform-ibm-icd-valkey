@@ -134,10 +134,8 @@
             },
             {
               "key": "region",
-              "type": "string",
-              "default_value": "eu-de",
-              "description": "The region where you want to deploy your instance.",
               "required": true,
+              "default_value": "eu-de",
               "custom_config": {
                 "type": "region",
                 "grouping": "deployment",
