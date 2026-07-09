@@ -48,7 +48,7 @@ variable "name" {
 }
 
 variable "region" {
-  description = "The region where you want to deploy your instance."
+  description = "The region where you want to deploy your Valkey instance."
   type        = string
   default     = "eu-de"
 
