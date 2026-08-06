@@ -76,21 +76,6 @@ resource "time_sleep" "wait_for_authorization_policy" {
   create_duration = "30s"
 }
 
-# Workaround:
-# Montreal does not have ICD classic endpoint, so common-utilities module will default to Toronto. This stops the module erroring.
-module "available_versions" {
-  source   = "terraform-ibm-modules/common-utilities/ibm//modules/icd-versions"
-  version  = "1.9.0"
-  region   = var.region
-  icd_type = "valkey"
-  plan     = "standard-gen2"
-  service  = "databases-for-valkey"
-}
-
-locals {
-  icd_supported_versions = module.available_versions.supported_versions
-}
-
 ########################################################################################################################
 # Valkey instance
 ########################################################################################################################
