@@ -31,11 +31,12 @@ locals {
 
 # Create IAM Authorization Policy to allow Valkey to access KMS for the encryption key
 resource "ibm_iam_authorization_policy" "kms_policy" {
-  count                    = local.create_kms_auth_policy
-  source_service_name      = "databases-for-valkey"
-  source_resource_group_id = var.resource_group_id
-  roles                    = ["Reader"]
-  description              = "Allow all Valkey instances in the resource group ${var.resource_group_id} to read the ${local.kms_service} key ${local.kms_key_id} from the instance GUID ${local.kms_key_instance_guid}"
+  count               = local.create_kms_auth_policy
+  source_service_name = "databases-for-valkey"
+  # See issue,https://github.com/terraform-ibm-modules/terraform-ibm-icd-postgresql/issues/885
+  # source_resource_group_id = var.resource_group_id
+  roles       = ["Reader"]
+  description = "Allow all Valkey instances in the account to read the ${local.kms_service} key ${local.kms_key_id} from the instance GUID ${local.kms_key_instance_guid}"
   resource_attributes {
     name     = "serviceName"
     operator = "stringEquals"
@@ -74,21 +75,6 @@ resource "time_sleep" "wait_for_authorization_policy" {
   depends_on = [ibm_iam_authorization_policy.kms_policy]
 
   create_duration = "30s"
-}
-
-# Workaround:
-# Montreal does not have ICD classic endpoint, so common-utilities module will default to Toronto. This stops the module erroring.
-module "available_versions" {
-  source   = "terraform-ibm-modules/common-utilities/ibm//modules/icd-versions"
-  version  = "1.9.0"
-  region   = var.region
-  icd_type = "valkey"
-  plan     = "standard-gen2"
-  service  = "databases-for-valkey"
-}
-
-locals {
-  icd_supported_versions = module.available_versions.supported_versions
 }
 
 ########################################################################################################################
