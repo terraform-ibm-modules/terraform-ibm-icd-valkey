@@ -32,20 +32,32 @@ variable "members" {
   type        = number
   description = "Allocated number of members. Members can be scaled up but not down."
   default     = 3
-  # Validation is done in terraform plan phase by IBM provider, so no need to add any extra validation here
 }
 
 variable "disk_mb" {
   type        = number
-  description = "Allocated disk per member. [Learn more](https://cloud.ibm.com/docs/databases-for-valkey?topic=databases-for-valkey-resources-scaling)"
+  description = "Allocated disk per member."
   default     = 20480
-  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+
+  validation {
+    condition     = var.disk_mb >= 15360 && var.disk_mb <= 6291456
+    error_message = "The disk per member must be between 15360 MB (15 GB) and 6291456 MB (6144 GB)."
+  }
 }
 
 variable "member_host_flavor" {
   type        = string
   description = "Allocated host flavor per member. Valkey requires a dedicated host flavor — multitenant is not supported. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
-  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+
+  validation {
+    condition     = length(var.member_host_flavor) > 0
+    error_message = "Member host flavor must be specified."
+  }
+
+  validation {
+    condition     = var.member_host_flavor != "multitenant"
+    error_message = "Shared compute, `multitenant`, is not supported for Valkey. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  }
 }
 
 variable "service_credential_names" {

@@ -98,15 +98,6 @@ variable "member_host_flavor" {
   type        = string
   description = "The host flavor per member. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
   default     = "bx3d.4x20"
-  # Prevent null or "", require a machine type
-  validation {
-    condition     = (length(var.member_host_flavor) > 0)
-    error_message = "Member host flavor must be specified."
-  }
-  validation {
-    condition     = (length(var.member_host_flavor) > 0) && var.member_host_flavor != "multitenant"
-    error_message = "Shared compute, `multitenant`, is not supported for Gen2. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
-  }
 }
 
 variable "service_credential_names" {
