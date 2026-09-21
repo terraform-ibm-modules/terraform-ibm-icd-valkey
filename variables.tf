@@ -28,13 +28,6 @@ variable "region" {
 # ICD hosting model properties
 ##############################################################################
 
-variable "members" {
-  type        = number
-  description = "Allocated number of members. Members can be scaled up but not down."
-  default     = 2
-  # Validation is done in terraform plan phase by IBM provider, so no need to add any extra validation here
-}
-
 variable "disk_mb" {
   type        = number
   description = "Allocated disk per member. [Learn more](https://cloud.ibm.com/docs/databases-for-valkey?topic=databases-for-valkey-resources-scaling)"

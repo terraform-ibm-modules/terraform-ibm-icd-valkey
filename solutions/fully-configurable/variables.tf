@@ -82,12 +82,6 @@ variable "valkey_version" {
 # ICD hosting model properties
 ##############################################################################
 
-variable "members" {
-  type        = number
-  description = "The number of members that are allocated."
-  default     = 2
-}
-
 variable "member_disk_mb" {
   type        = number
   description = "The disk that is allocated per member."
