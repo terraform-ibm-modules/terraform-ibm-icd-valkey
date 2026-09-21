@@ -40,8 +40,8 @@ variable "disk_mb" {
   default     = 20480
 
   validation {
-    condition     = var.disk_mb >= 15360 && var.disk_mb <= 6291456
-    error_message = "The disk per member must be between 15360 MB (15 GB) and 6291456 MB (6144 GB)."
+    condition     = var.disk_mb >= 10240 && var.disk_mb <= 4096000
+    error_message = "The disk per member must be between 10240 MB (10 GB) and 4096000 MB (4000 GB)."
   }
 }
 
