@@ -21,8 +21,9 @@ import (
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
-// Use existing resource group
-const resourceGroup = "geretain-test-valkey"
+// ResourceGroup is intentionally not set so a unique group is created per run for this test.
+// Independent backup policies may not be destroyed on failure, causing conflicts on re-runs within the same group.
+// const resourceGroup = "geretain-test-valkey"
 
 const icdShortType = "valk"
 
@@ -93,11 +94,10 @@ func GetRegionVersions(region string) (string, string) {
 
 func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  dir,
-		Prefix:        prefix,
-		Region:        "eu-de", // Currently, Valkey is supported only in the eu-de region.
-		ResourceGroup: resourceGroup,
+		Testing:      t,
+		TerraformDir: dir,
+		Prefix:       prefix,
+		Region:       "eu-de", // Currently, Valkey is supported only in the eu-de region.
 	})
 	return options
 }
@@ -166,11 +166,10 @@ func TestPlanValidation(t *testing.T) {
 	region := options.Region
 	valkeyVersion, _ := GetRegionVersions(region)
 	options.TerraformOptions.Vars = map[string]interface{}{
-		"prefix":                       options.Prefix,
-		"region":                       region,
-		"valkey_version":               valkeyVersion,
-		"provider_visibility":          "public",
-		"existing_resource_group_name": resourceGroup,
+		"prefix":              options.Prefix,
+		"region":              region,
+		"valkey_version":      valkeyVersion,
+		"provider_visibility": "public",
 	}
 
 	// Test the DA when using an existing KMS instance
@@ -225,7 +224,6 @@ func TestRunFullyConfigurableSolutionSchematics(t *testing.T) {
 		TemplateFolder:             fullyConfigurableSolutionTerraformDir,
 		BestRegionYAMLPath:         regionSelectionPath,
 		Prefix:                     fmt.Sprintf("%s-fc-da", icdShortType),
-		ResourceGroup:              resourceGroup,
 		DeleteWorkspaceOnFail:      false,
 		WaitJobCompleteMinutes:     60,
 		CheckApplyResultForUpgrade: true,
