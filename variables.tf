@@ -31,7 +31,7 @@ variable "region" {
 variable "members" {
   type        = number
   description = "Allocated number of members. Members can be scaled up but not down."
-  default     = 3
+  default     = 2
   # Validation is done in terraform plan phase by IBM provider, so no need to add any extra validation here
 }
 
