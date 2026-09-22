@@ -192,7 +192,6 @@ module "valkey" {
   kms_key_crn                   = local.kms_key_crn
   access_tags                   = var.access_tags
   resource_tags                 = var.resource_tags
-  members                       = var.members
   member_host_flavor            = var.member_host_flavor
   disk_mb                       = var.member_disk_mb
   service_credential_names      = var.service_credential_names
