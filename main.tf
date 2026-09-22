@@ -84,7 +84,7 @@ data "ibm_iam_account_settings" "iam_account_settings" {
 }
 
 resource "ibm_iam_authorization_policy" "gen2_independent_backups_policy" {
-  count                    = var.skip_iam_authorization_policy ? 0 : 1
+  count                    = var.skip_independent_backup_policies ? 0 : 1
   source_service_name      = "databases-for-valkey"
   source_resource_group_id = var.resource_group_id
   roles                    = ["Editor"]
@@ -108,7 +108,7 @@ resource "ibm_iam_authorization_policy" "gen2_independent_backups_policy" {
 
 # Authorization policy for databases-for-valkey to access resource-group with Viewer role
 resource "ibm_iam_authorization_policy" "gen2_resource_group_policy" {
-  count                    = var.skip_iam_authorization_policy ? 0 : 1
+  count                    = var.skip_independent_backup_policies ? 0 : 1
   source_service_name      = "databases-for-valkey"
   source_resource_group_id = var.resource_group_id
   roles                    = ["Viewer"]
