@@ -180,25 +180,26 @@ data "ibm_database" "existing_db_instance" {
 
 # Create new instance
 module "valkey" {
-  count                         = var.existing_valkey_instance_crn != null ? 0 : 1
-  source                        = "../.."
-  depends_on                    = [time_sleep.wait_for_authorization_policy]
-  resource_group_id             = module.resource_group.resource_group_id
-  name                          = "${local.prefix}${var.name}"
-  region                        = var.region
-  valkey_version                = var.valkey_version
-  skip_iam_authorization_policy = var.kms_encryption_enabled ? var.skip_valkey_kms_auth_policy : true
-  use_ibm_owned_encryption_key  = local.use_ibm_owned_encryption_key
-  kms_key_crn                   = local.kms_key_crn
-  access_tags                   = var.access_tags
-  resource_tags                 = var.resource_tags
-  member_host_flavor            = var.member_host_flavor
-  disk_mb                       = var.member_disk_mb
-  service_credential_names      = var.service_credential_names
-  deletion_protection           = var.deletion_protection
-  create_timeout                = var.create_timeout
-  update_timeout                = var.update_timeout
-  delete_timeout                = var.delete_timeout
+  count                            = var.existing_valkey_instance_crn != null ? 0 : 1
+  source                           = "../.."
+  depends_on                       = [time_sleep.wait_for_authorization_policy]
+  resource_group_id                = module.resource_group.resource_group_id
+  name                             = "${local.prefix}${var.name}"
+  region                           = var.region
+  valkey_version                   = var.valkey_version
+  skip_iam_authorization_policy    = var.kms_encryption_enabled ? var.skip_valkey_kms_auth_policy : true
+  skip_independent_backup_policies = var.skip_independent_backup_policies
+  use_ibm_owned_encryption_key     = local.use_ibm_owned_encryption_key
+  kms_key_crn                      = local.kms_key_crn
+  access_tags                      = var.access_tags
+  resource_tags                    = var.resource_tags
+  member_host_flavor               = var.member_host_flavor
+  disk_mb                          = var.member_disk_mb
+  service_credential_names         = var.service_credential_names
+  deletion_protection              = var.deletion_protection
+  create_timeout                   = var.create_timeout
+  update_timeout                   = var.update_timeout
+  delete_timeout                   = var.delete_timeout
 }
 
 locals {

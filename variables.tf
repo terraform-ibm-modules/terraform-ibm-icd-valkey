@@ -156,6 +156,12 @@ variable "kms_key_crn" {
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Set to true to skip the creation of IAM authorization policies. When set to false (default), the following policies are created: (1) a policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Key Protect Dedicated Services key provided in the `kms_key_crn` input (required for KMS encryption — skip only if one already exists in your account; no policy is created if `use_ibm_owned_encryption_key` is true), (2) a policy that permits Databases for Valkey instances in the given resource group 'Editor' access to the independent backups service (`gen2_independent_backups_policy`), and (3) a policy that permits Databases for Valkey instances in the given resource group 'Viewer' access to the resource group (`gen2_resource_group_policy`)."
+  description = "Set to true to skip the creation of IAM authorization policies. When set to false (default), a policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Key Protect Dedicated Services key provided in the `kms_key_crn` input (required for KMS encryption) will be created. — skip only if one already exists in your account; no policy is created if `use_ibm_owned_encryption_key` is true."
+  default     = false
+}
+
+variable "skip_independent_backup_policies" {
+  type        = bool
+  description = "Set to true to skip the creation of independent backup authorization policies. When set to false (default). The following 2 policies will be created - (1) a policy that permits Databases for Valkey instances in the given resource group 'Editor' access to the independent backups service (`gen2_independent_backups_policy`), (2) a policy that permits Databases for Valkey instances in the given resource group 'Viewer' access to the resource group (`gen2_resource_group_policy`)."
   default     = false
 }
