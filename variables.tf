@@ -28,24 +28,30 @@ variable "region" {
 # ICD hosting model properties
 ##############################################################################
 
-variable "members" {
-  type        = number
-  description = "Allocated number of members. Members can be scaled up but not down."
-  default     = 3
-  # Validation is done in terraform plan phase by IBM provider, so no need to add any extra validation here
-}
-
 variable "disk_mb" {
   type        = number
-  description = "Allocated disk per member. [Learn more](https://cloud.ibm.com/docs/databases-for-valkey?topic=databases-for-valkey-resources-scaling)"
+  description = "Allocated disk per member."
   default     = 20480
-  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+
+  validation {
+    condition     = var.disk_mb >= 10240 && var.disk_mb <= 4096000
+    error_message = "The disk per member must be between 10240 MB (10 GB) and 4096000 MB (4000 GB)."
+  }
 }
 
 variable "member_host_flavor" {
   type        = string
   description = "Allocated host flavor per member. Valkey requires a dedicated host flavor — multitenant is not supported. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
-  # Validation is done in the Terraform plan phase by the IBM provider, so no need to add extra validation here.
+
+  validation {
+    condition     = length(var.member_host_flavor) > 0
+    error_message = "Member host flavor must be specified."
+  }
+
+  validation {
+    condition     = var.member_host_flavor != "multitenant"
+    error_message = "Shared compute, `multitenant`, is not supported for Valkey. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  }
 }
 
 variable "service_credential_names" {
@@ -150,6 +156,12 @@ variable "kms_key_crn" {
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Set to true to skip the creation of an IAM authorization policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Key Protect Dedicated Services key provided in the `kms_key_crn` input. This policy is required in order to enable KMS encryption, so only skip creation if there is one already present in your account. No policy is created if `use_ibm_owned_encryption_key` is true."
+  description = "Set to true to skip the creation of IAM authorization policies. When set to false (default), a policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Key Protect Dedicated Services key provided in the `kms_key_crn` input (required for KMS encryption) will be created. — skip only if one already exists in your account; no policy is created if `use_ibm_owned_encryption_key` is true."
+  default     = false
+}
+
+variable "skip_independent_backup_policies" {
+  type        = bool
+  description = "Set to true to skip the creation of independent backup authorization policies. When set to false (default). The following 2 policies will be created - (1) a policy that permits Databases for Valkey instances in the given resource group 'Editor' access to the independent backups service (`gen2_independent_backups_policy`), (2) a policy that permits Databases for Valkey instances in the given resource group 'Viewer' access to the resource group (`gen2_resource_group_policy`)."
   default     = false
 }

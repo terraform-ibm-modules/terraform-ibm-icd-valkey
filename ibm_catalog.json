@@ -31,7 +31,7 @@
       "features": [
         {
           "title": "KMS encryption",
-          "description": "Provides [KMS encryption](https://cloud.ibm.com/docs/databases-for-valkey?topic=databases-for-valkey-key-protect&interface=ui) for the data that you store in the database, enhancing data security."
+          "description": "Provides KMS encryption for the data that you store in the database, enhancing data security."
         },
         {
           "title": "Access tags",
@@ -194,9 +194,6 @@
               }
             },
             {
-              "key": "members"
-            },
-            {
               "key": "member_disk_mb"
             },
             {
@@ -323,6 +320,9 @@
             },
             {
               "key": "skip_valkey_kms_auth_policy"
+            },
+            {
+              "key": "skip_independent_backup_policies"
             },
             {
               "key": "existing_valkey_instance_crn",

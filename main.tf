@@ -78,11 +78,75 @@ resource "time_sleep" "wait_for_authorization_policy" {
 }
 
 ########################################################################################################################
+# Gen2 IAM Authorization Policies
+########################################################################################################################
+data "ibm_iam_account_settings" "iam_account_settings" {
+}
+
+resource "ibm_iam_authorization_policy" "gen2_independent_backups_policy" {
+  count                    = var.skip_independent_backup_policies ? 0 : 1
+  source_service_name      = "databases-for-valkey"
+  source_resource_group_id = var.resource_group_id
+  roles                    = ["Editor"]
+  description              = "Allow Valkey instances in resource group ${var.resource_group_id} to access independent backups service with Editor role"
+
+  resource_attributes {
+    name     = "accountId"
+    operator = "stringEquals"
+    value    = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+  resource_attributes {
+    name     = "serviceName"
+    operator = "stringEquals"
+    value    = "databases-independent-backups"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# Authorization policy for databases-for-valkey to access resource-group with Viewer role
+resource "ibm_iam_authorization_policy" "gen2_resource_group_policy" {
+  count                    = var.skip_independent_backup_policies ? 0 : 1
+  source_service_name      = "databases-for-valkey"
+  source_resource_group_id = var.resource_group_id
+  roles                    = ["Viewer"]
+  description              = "Allow Valkey instances in resource group ${var.resource_group_id} to view resource group with Viewer role"
+
+  resource_attributes {
+    name     = "accountId"
+    operator = "stringEquals"
+    value    = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+  resource_attributes {
+    name     = "resourceType"
+    operator = "stringEquals"
+    value    = "resource-group"
+  }
+  resource_attributes {
+    name     = "resource"
+    operator = "stringEquals"
+    value    = var.resource_group_id
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
+resource "time_sleep" "wait_for_gen2_authorization_policies" {
+  depends_on      = [ibm_iam_authorization_policy.gen2_independent_backups_policy, ibm_iam_authorization_policy.gen2_resource_group_policy]
+  create_duration = "30s"
+}
+
+########################################################################################################################
 # Valkey instance
 ########################################################################################################################
 
 resource "ibm_database" "valkey" {
-  depends_on          = [time_sleep.wait_for_authorization_policy]
+  depends_on          = [time_sleep.wait_for_authorization_policy, time_sleep.wait_for_gen2_authorization_policies]
   name                = var.name
   plan                = "standard-gen2" # Only standard-gen2 plan is available for Valkey
   location            = var.region
@@ -103,7 +167,7 @@ resource "ibm_database" "valkey" {
       allocation_mb = var.disk_mb
     }
     members {
-      allocation_count = var.members
+      allocation_count = 2
     }
   }
 
