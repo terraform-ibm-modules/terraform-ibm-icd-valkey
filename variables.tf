@@ -30,7 +30,7 @@ variable "region" {
 
 variable "disk_mb" {
   type        = number
-  description = "Allocated disk per member."
+  description = "Allocated disk per member. [Learn more](https://test.cloud.ibm.com/docs/databases-for-valkey-gen2?topic=databases-for-valkey-gen2-resources-scaling)"
   default     = 20480
 
   validation {

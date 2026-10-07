@@ -9,7 +9,7 @@
 
 This module implements an instance of IBM Cloud Databases for Valkey.
 
-:exclamation: The module does not support major version upgrades or updates to encryption and backup encryption keys. To upgrade the version, create another instance of Databases for Valkey with the updated version.
+:exclamation: The module does not support major version upgrades or updates to encryption and backup encryption keys. To upgrade the version, create another instance of Databases for Valkey with the updated version and follow the steps in [Upgrading to a new Major Version](https://test.cloud.ibm.com/docs/databases-for-valkey-gen2?topic=databases-for-valkey-gen2-upgrading&interface=ui) in the IBM Cloud Docs.
 
 <!-- Below content is automatically populated via pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
