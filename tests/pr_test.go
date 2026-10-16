@@ -157,7 +157,7 @@ func TestPlanValidation(t *testing.T) {
 		Testing:      t,
 		TerraformDir: fullyConfigurableSolutionTerraformDir,
 		Prefix:       "val-plan",
-		Region:       "ca-mon",
+		Region:       "us-south",
 	})
 	options.TestSetup()
 	options.TerraformOptions.NoColor = true
