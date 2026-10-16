@@ -157,7 +157,7 @@ func TestPlanValidation(t *testing.T) {
 		Testing:      t,
 		TerraformDir: fullyConfigurableSolutionTerraformDir,
 		Prefix:       "val-plan",
-		Region:       "eu-de", // Currently, Valkey is supported only in the eu-de region.
+		Region:       "ca-mon",
 	})
 	options.TestSetup()
 	options.TerraformOptions.NoColor = true
