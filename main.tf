@@ -35,7 +35,7 @@ resource "ibm_iam_authorization_policy" "kms_policy" {
   source_service_name = "databases-for-valkey"
   # See issue,https://github.com/terraform-ibm-modules/terraform-ibm-icd-postgresql/issues/885
   # source_resource_group_id = var.resource_group_id
-  roles       = ["Reader"]
+  roles       = ["Reader", "Authorization Delegator"] # Authorization Delegator role required for backup encryption key
   description = "Allow all Valkey instances in the account to read the ${local.kms_service} key ${local.kms_key_id} from the instance GUID ${local.kms_key_instance_guid}"
   resource_attributes {
     name     = "serviceName"
