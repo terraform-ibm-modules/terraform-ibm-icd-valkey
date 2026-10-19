@@ -97,7 +97,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		Testing:      t,
 		TerraformDir: dir,
 		Prefix:       prefix,
-		Region:       "eu-de", // Currently, Valkey is supported only in the eu-de region.
+		Region:       "us-south",
 	})
 	return options
 }
@@ -260,7 +260,7 @@ func TestRunFullyConfigurableSolutionSchematics(t *testing.T) {
 		},
 	}
 
-	region := "eu-de" // Currently, Valkey is supported only in the eu-de region.
+	region := "us-south"
 	valkeyVersion, _ := GetRegionVersions(region)
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
@@ -333,7 +333,7 @@ func TestRunFullyConfigurableWithKMSUpgradeSolution(t *testing.T) {
 
 	uniqueResourceGroup := generateUniqueResourceGroupName(options.Prefix)
 
-	region := "eu-de"
+	region := "us-south"
 	valkeyVersion, _ := GetRegionVersions(region)
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
