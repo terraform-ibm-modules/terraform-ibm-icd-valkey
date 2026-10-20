@@ -50,7 +50,7 @@ variable "name" {
 variable "region" {
   description = "The region where you want to deploy your Valkey instance."
   type        = string
-  default     = "eu-de"
+  default     = "us-south"
 
   validation {
     condition     = var.existing_valkey_instance_crn != null && var.region != local.existing_valkey_region ? false : true
