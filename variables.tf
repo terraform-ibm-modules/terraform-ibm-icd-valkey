@@ -21,7 +21,7 @@ variable "valkey_version" {
 variable "region" {
   type        = string
   description = "The region where you want to deploy your instance. For more information on which regions Gen2 is available, see [Feature differentiators](https://cloud.ibm.com/docs/cloud-databases-gen2?topic=cloud-databases-gen2-overview-gen1-gen2#feature-differentiators)."
-  default     = "eu-de"
+  default     = "us-south"
 }
 
 ##############################################################################
