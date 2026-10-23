@@ -50,7 +50,7 @@ variable "name" {
 variable "region" {
   description = "The region where you want to deploy your Valkey instance."
   type        = string
-  default     = "eu-de"
+  default     = "us-south"
 
   validation {
     condition     = var.existing_valkey_instance_crn != null && var.region != local.existing_valkey_region ? false : true
@@ -194,7 +194,7 @@ variable "existing_kms_key_crn" {
 
 variable "skip_valkey_kms_auth_policy" {
   type        = bool
-  description = "Whether to skip the creation of IAM authorization policies for the Valkey instance. When set to false (default) and `kms_encryption_enabled` is true, a policy that permits all Databases for Valkey instances in the resource group 'Reader' access to the encryption key from the Key Protect instance specified in the `existing_kms_instance_crn` variable (required for KMS encryption) is created. Skip only if one already exists in your account."
+  description = "Whether to skip the creation of IAM authorization policies for the Valkey instance. When set to false (default) and `kms_encryption_enabled` is true, a policy that permits all Databases for Valkey instances in the resource group 'Reader' and 'Authorization Delegator' access to the encryption key from the Key Protect instance specified in the `existing_kms_instance_crn` variable (required for KMS encryption) is created. Skip only if one already exists in your account)."
   default     = false
 }
 

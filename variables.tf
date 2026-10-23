@@ -21,7 +21,7 @@ variable "valkey_version" {
 variable "region" {
   type        = string
   description = "The region where you want to deploy your instance. For more information on which regions Gen2 is available, see [Feature differentiators](https://cloud.ibm.com/docs/cloud-databases-gen2?topic=cloud-databases-gen2-overview-gen1-gen2#feature-differentiators)."
-  default     = "eu-de"
+  default     = "us-south"
 }
 
 ##############################################################################
@@ -156,7 +156,7 @@ variable "kms_key_crn" {
 
 variable "skip_iam_authorization_policy" {
   type        = bool
-  description = "Set to true to skip the creation of IAM authorization policies. When set to false (default), a policy that permits all Databases for Valkey instances in the given resource group 'Reader' access to the Key Protect or Key Protect Dedicated Services key provided in the `kms_key_crn` input (required for KMS encryption) will be created. — skip only if one already exists in your account; no policy is created if `use_ibm_owned_encryption_key` is true."
+  description = "Set to true to skip the creation of IAM authorization policies. When set to false (default), a policy that permits all Databases for Valkey instances in the given resource group 'Reader' and 'Authorization Delegator' access to the Key Protect or Key Protect Dedicated Services key provided in the `kms_key_crn` input (required for KMS encryption) will be created. — skip only if one already exists in your account; no policy is created if `use_ibm_owned_encryption_key` is true."
   default     = false
 }
 
