@@ -159,8 +159,7 @@ module "valkey_instance_crn_parser" {
 
 # Existing instance local vars
 locals {
-  existing_valkey_guid   = var.existing_valkey_instance_crn != null ? module.valkey_instance_crn_parser[0].service_instance : null
-  existing_valkey_region = var.existing_valkey_instance_crn != null ? module.valkey_instance_crn_parser[0].region : null
+  existing_valkey_guid = var.existing_valkey_instance_crn != null ? module.valkey_instance_crn_parser[0].service_instance : null
 }
 
 # Do a data lookup on the resource GUID to get more info that is needed for the 'ibm_database' data lookup below
@@ -174,7 +173,7 @@ data "ibm_database" "existing_db_instance" {
   count             = var.existing_valkey_instance_crn != null ? 1 : 0
   name              = data.ibm_resource_instance.existing_instance_resource[0].name
   resource_group_id = data.ibm_resource_instance.existing_instance_resource[0].resource_group_id
-  location          = var.region
+  location          = data.ibm_resource_instance.existing_instance_resource[0].location
   service           = "databases-for-valkey"
 }
 
