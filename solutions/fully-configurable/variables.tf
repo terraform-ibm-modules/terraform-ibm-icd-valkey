@@ -51,11 +51,6 @@ variable "region" {
   description = "The region where you want to deploy your Valkey instance."
   type        = string
   default     = "us-south"
-
-  validation {
-    condition     = var.existing_valkey_instance_crn != null && var.region != local.existing_valkey_region ? false : true
-    error_message = "The region detected in the 'existing_valkey_instance_crn' value must match the value of the 'region' input variable when passing an existing instance."
-  }
 }
 
 variable "existing_valkey_instance_crn" {
