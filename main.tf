@@ -157,17 +157,21 @@ resource "ibm_database" "valkey" {
   deletion_protection = var.deletion_protection
   tags                = var.resource_tags
   key_protect_key     = var.kms_key_crn
+  backup_id           = var.backup_crn
 
-  group {
-    group_id = "member" # Only member type is allowed for IBM Cloud Databases
-    host_flavor {
-      id = var.member_host_flavor
-    }
-    disk {
-      allocation_mb = var.disk_mb
-    }
-    members {
-      allocation_count = 2
+  dynamic "group" {
+    for_each = var.backup_crn == null ? [1] : []
+    content {
+      group_id = "member" # Only member type is allowed for IBM Cloud Databases
+      host_flavor {
+        id = var.member_host_flavor
+      }
+      disk {
+        allocation_mb = var.disk_mb
+      }
+      members {
+        allocation_count = 2
+      }
     }
   }
 

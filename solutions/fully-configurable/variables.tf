@@ -282,6 +282,25 @@ variable "skip_valkey_secrets_manager_auth_policy" {
   description = "Whether an IAM authorization policy is created for Secrets Manager instance to create a service credential secrets for Databases for Valkey. If set to false, the Secrets Manager instance passed by the user is granted the Key Manager access to the Valkey instance created by the Deployable Architecture. Set to `true` to use an existing policy. The value of this is ignored if any value for 'existing_secrets_manager_instance_crn' is not passed."
 }
 
+##############################################################################
+# Backup
+##############################################################################
+
+variable "backup_crn" {
+  type        = string
+  description = "The CRN of a backup resource to restore from. The backup is loaded after provisioning and the new deployment starts up that uses that data. If omitted, the database is provisioned empty."
+  default     = null
+
+  validation {
+    condition = anytrue([
+      var.backup_crn == null,
+      can(regex("^crn:v\\d:(.*:){2}(databases-for-valkey|databases-for-redis):(..*):([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:backup:[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$", var.backup_crn)),
+      can(regex("^crn:v\\d:(.*:){2}databases-independent-backups:(..*):([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.backup_crn))
+    ])
+    error_message = "The value provided for 'backup_crn' is not valid."
+  }
+}
+
 ##############################################################
 # Endpoint Configuration
 ##############################################################

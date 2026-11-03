@@ -194,6 +194,7 @@ module "valkey" {
   resource_tags                         = var.resource_tags
   member_host_flavor                    = var.member_host_flavor
   disk_mb                               = var.member_disk_mb
+  backup_crn                            = var.backup_crn
   service_credential_names              = var.service_credential_names
   deletion_protection                   = var.deletion_protection
   create_timeout                        = var.create_timeout

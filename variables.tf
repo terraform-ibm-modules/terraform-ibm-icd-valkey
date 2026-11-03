@@ -42,15 +42,34 @@ variable "disk_mb" {
 variable "member_host_flavor" {
   type        = string
   description = "Allocated host flavor per member. Valkey requires a dedicated host flavor — multitenant is not supported. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  default     = null
 
   validation {
-    condition     = length(var.member_host_flavor) > 0
+    condition     = var.backup_crn != null || (var.member_host_flavor != null && length(var.member_host_flavor) > 0)
     error_message = "Member host flavor must be specified."
   }
 
   validation {
-    condition     = var.member_host_flavor != "multitenant"
+    condition     = var.member_host_flavor == null || var.member_host_flavor != "multitenant"
     error_message = "Shared compute, `multitenant`, is not supported for Valkey. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/database#host_flavor)."
+  }
+}
+
+##############################################################################
+# Backup
+##############################################################################
+
+variable "backup_crn" {
+  type        = string
+  description = "The CRN of a backup resource to restore from. The backup is loaded after provisioning and the new deployment starts up that uses that data. If omitted, the database is provisioned empty."
+  default     = null
+
+  validation {
+    condition = anytrue([
+      var.backup_crn == null,
+      can(regex("^crn:.*", var.backup_crn))
+    ])
+    error_message = "The value provided for 'backup_crn' must be a valid CRN or null."
   }
 }
 
