@@ -334,7 +334,7 @@
                 {
                   "type": "regex",
                   "description": "The value provided for 'backup_crn' is not valid.",
-                  "value": "^__NULL__$|^crn:v\\d:(.*:){2}(databases-for-valkey|databases-for-redis):(..*):([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:backup:[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$|^crn:v\\d:(.*:){2}databases-independent-backups:(..*):([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                  "value": "^__NULL__$|^crn:v\\d:(.*:){2}(databases-for-valkey):(..*):([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:backup:[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$|^crn:v\\d:(.*:){2}databases-independent-backups:(..*):([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
                 }
               ]
             },

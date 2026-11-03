@@ -45,7 +45,7 @@ variable "member_host_flavor" {
   default     = null
 
   validation {
-    condition     = var.backup_crn != null || (var.member_host_flavor != null && length(var.member_host_flavor) > 0)
+    condition     = var.member_host_flavor != null && length(var.member_host_flavor) > 0
     error_message = "Member host flavor must be specified."
   }
 

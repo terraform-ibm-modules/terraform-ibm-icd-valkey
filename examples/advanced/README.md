@@ -9,12 +9,11 @@
 </p>
 <!-- END SCHEMATICS DEPLOY HOOK -->
 
-This example creates an IBM Cloud Database for Valkey instance with KMS encryption enabled and demonstrates restoring a database instance from a backup.
+This example creates an IBM Cloud Database for Valkey instance with KMS encryption enabled.
 
 The following resources are provisioned by this example:
 
 - A new resource group, if an existing one is not passed in.
 - A Key Protect instance with one root key in the given resource group and region.
 - An instance of Databases for Valkey with KMS encryption enabled.
-- A restored Databases for Valkey instance created from the backup of the first instance.
 - Service credentials for the database instance.

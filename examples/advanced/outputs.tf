@@ -28,13 +28,3 @@ output "service_credentials_object" {
   value       = module.icd_valkey.service_credentials_object
   sensitive   = true
 }
-
-output "restored_instance_id" {
-  description = "Restored Valkey instance id"
-  value       = module.restored_valkey.id
-}
-
-output "restored_instance_version" {
-  description = "Restored Valkey instance version"
-  value       = module.restored_valkey.version
-}

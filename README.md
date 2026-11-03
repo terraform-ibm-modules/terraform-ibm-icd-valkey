@@ -23,6 +23,10 @@ This module implements an instance of IBM Cloud Databases for Valkey.
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=icd-valkey-advanced-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/tree/main/examples/advanced"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>
       <li>
+        <a href="https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/tree/main/examples/backup-restore">Backup restore example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=icd-valkey-backup-restore-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/tree/main/examples/backup-restore"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
         <a href="https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/tree/main/examples/basic">Basic example</a>
         <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=icd-valkey-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
       </li>

@@ -71,24 +71,3 @@ module "icd_valkey" {
   member_host_flavor  = var.member_host_flavor
   deletion_protection = false
 }
-
-##############################################################################
-# Restore from Backup
-##############################################################################
-
-data "ibm_database_backups" "valkey_backups" {
-  deployment_id = module.icd_valkey.crn
-}
-
-module "restored_valkey" {
-  source              = "../../"
-  resource_group_id   = module.resource_group.resource_group_id
-  valkey_version      = var.valkey_version
-  name                = "${var.prefix}-valkey-restored"
-  region              = var.region
-  backup_crn          = data.ibm_database_backups.valkey_backups.backups[0].backup_id
-  deletion_protection = false
-  resource_tags       = var.resource_tags
-  access_tags         = var.access_tags
-  member_host_flavor  = var.member_host_flavor
-}
