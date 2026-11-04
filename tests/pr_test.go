@@ -29,6 +29,7 @@ const icdShortType = "valk"
 
 const basicExampleDir = "examples/basic"
 const advancedExampleDir = "examples/advanced"
+const backupRestoreExampleDir = "examples/backup-restore"
 const fullyConfigurableSolutionTerraformDir = "solutions/fully-configurable"
 
 // Restricting due to limited availability of BYOK in certain regions
@@ -150,6 +151,30 @@ func TestRunUpgradeExample(t *testing.T) {
 		assert.Nil(t, err, "This should not have errored")
 		assert.NotNil(t, output, "Expected some output")
 	}
+}
+
+// Restores a new Valkey instance from the latest backup of a permanent Valkey instance
+func TestRunRestoredDBExample(t *testing.T) {
+	t.Parallel()
+
+	// ResourceGroup is intentionally not set so a unique group is created per run for this test.
+	// Independent backup policies may not be destroyed on failure, causing conflicts on re-runs within the same group.
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:      t,
+		TerraformDir: backupRestoreExampleDir,
+		Prefix:       "valkey-rst",
+		TerraformVars: map[string]interface{}{
+			"disk_mb":               permanentResources["valkeyGen2DiskMb"],
+			"valkey_version":        permanentResources["valkeyGen2Version"],
+			"region":                permanentResources["valkeyGen2Region"],
+			"existing_database_crn": permanentResources["valkeyGen2Crn"],
+		},
+		CloudInfoService: sharedInfoSvc,
+	})
+
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
 }
 
 func TestPlanValidation(t *testing.T) {
