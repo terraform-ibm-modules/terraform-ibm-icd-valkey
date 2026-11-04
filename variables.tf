@@ -68,7 +68,7 @@ variable "backup_crn" {
       var.backup_crn == null,
       can(regex("^crn:.*:databases-independent-backups:", var.backup_crn))
     ])
-    error_message = "The value provided for 'backup_crn' must be a valid CRN or null."
+    error_message = "`backup_crn` must be null, OR a Gen2 independent backup CRN containing ':databases-independent-backups:'."
   }
 
 }
