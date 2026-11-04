@@ -9,7 +9,7 @@
 </p>
 <!-- END SCHEMATICS DEPLOY HOOK -->
 
-This example creates an IBM Cloud Database for Valkey instance with KMS encryption enabled.
+This example creates an IBM Cloud Database for Valkey instance with KMS encryption enabled configured.
 
 The following resources are provisioned by this example:
 
