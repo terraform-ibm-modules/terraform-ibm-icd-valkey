@@ -162,7 +162,7 @@ func TestRunRestoredDBExample(t *testing.T) {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:      t,
 		TerraformDir: backupRestoreExampleDir,
-		Prefix:       "valkey-rst",
+		Prefix:       "vk-r",
 		TerraformVars: map[string]interface{}{
 			"disk_mb":               permanentResources["valkeyGen2DiskMb"],
 			"valkey_version":        permanentResources["valkeyGen2Version"],
