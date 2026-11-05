@@ -16,7 +16,7 @@ data "ibm_database_backups" "backup_database" {
 
 # New Valkey instance restored from the latest backup of the existing instance
 module "restored_icd_valkey" {
-  source = "../../"
+  source = "../.."
   # remove the above line and uncomment the below 2 lines to consume the module from the registry
   # source            = "terraform-ibm-modules/icd-valkey/ibm"
   # version           = "X.Y.Z" # Replace "X.Y.Z" with a release version to lock into a specific release
@@ -26,7 +26,7 @@ module "restored_icd_valkey" {
   region              = var.region
   resource_tags       = var.resource_tags
   access_tags         = var.access_tags
-  member_host_flavor  = var.member_host_flavor
+  member_host_flavor  = "bx3d.4x20"
   disk_mb             = var.disk_mb
   deletion_protection = false
   backup_crn          = data.ibm_database_backups.backup_database.backups[0].backup_id

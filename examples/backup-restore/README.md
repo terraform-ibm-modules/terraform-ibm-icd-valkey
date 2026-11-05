@@ -20,5 +20,3 @@ Provide the CRN of an existing Valkey instance that already has a backup via `ex
 ```
 crn:v1:bluemix:public:databases-independent-backups:<region>:a/<account-id>:<backup-id>::
 ```
-
-The first independent backup of a new instance is not available immediately after provisioning, so the existing instance must have been running long enough to have a backup.
