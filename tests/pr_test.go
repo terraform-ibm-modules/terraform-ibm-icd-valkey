@@ -121,7 +121,7 @@ func TestMain(m *testing.M) {
 
 // Consistency test for the basic example
 func TestRunBasicExample(t *testing.T) {
-	t.Skip()
+	t.Parallel()
 
 	options := setupOptions(t, "valkey-basic", basicExampleDir)
 
@@ -131,7 +131,7 @@ func TestRunBasicExample(t *testing.T) {
 }
 
 func TestRunAdvancedExample(t *testing.T) {
-	t.Skip()
+	t.Parallel()
 
 	options := setupOptions(t, "valkey-adv", advancedExampleDir)
 
@@ -142,7 +142,7 @@ func TestRunAdvancedExample(t *testing.T) {
 
 // Upgrade test (using advanced example)
 func TestRunUpgradeExample(t *testing.T) {
-	t.Skip()
+	t.Parallel()
 
 	options := setupOptions(t, "valkey-adv-upg", advancedExampleDir)
 
@@ -165,7 +165,7 @@ func TestRunRestoredDBExample(t *testing.T) {
 		Prefix:       "vk-r",
 		TerraformVars: map[string]interface{}{
 			"disk_mb":               permanentResources["valkeyGen2DiskMb"],
-			"valkey_version":        fmt.Sprint(permanentResources["valkeyGen2Version"]),
+			"valkey_version":        fmt.Sprintf("%.1f", permanentResources["valkeyGen2Version"]),
 			"region":                permanentResources["valkeyGen2Region"],
 			"existing_database_crn": permanentResources["valkeyGen2Crn"],
 		},
@@ -238,7 +238,7 @@ func TestPlanValidation(t *testing.T) {
 
 // Test the fully-configurable DA with defaults (IBM owned encryption keys)
 func TestRunFullyConfigurableSolutionSchematics(t *testing.T) {
-	t.Skip()
+	t.Parallel()
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
@@ -311,7 +311,7 @@ func TestRunFullyConfigurableSolutionSchematics(t *testing.T) {
 
 // Upgrade test the fully-configurable DA with KMS encryption (KYOK)
 func TestRunFullyConfigurableWithKMSUpgradeSolution(t *testing.T) {
-	t.Skip()
+	t.Parallel()
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
