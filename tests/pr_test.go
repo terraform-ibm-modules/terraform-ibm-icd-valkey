@@ -165,7 +165,7 @@ func TestRunRestoredDBExample(t *testing.T) {
 		Prefix:       "vk-r",
 		TerraformVars: map[string]interface{}{
 			"disk_mb":               permanentResources["valkeyGen2DiskMb"],
-			"valkey_version":        fmt.Sprint(permanentResources["mysqlGen2Version"]),
+			"valkey_version":        fmt.Sprint(permanentResources["valkeyGen2Version"]),
 			"region":                permanentResources["valkeyGen2Region"],
 			"existing_database_crn": permanentResources["valkeyGen2Crn"],
 		},
