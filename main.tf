@@ -157,6 +157,7 @@ resource "ibm_database" "valkey" {
   deletion_protection = var.deletion_protection
   tags                = var.resource_tags
   key_protect_key     = var.kms_key_crn
+  backup_id           = var.backup_crn
 
   group {
     group_id = "member" # Only member type is allowed for IBM Cloud Databases

@@ -54,6 +54,25 @@ variable "member_host_flavor" {
   }
 }
 
+##############################################################################
+# Backup
+##############################################################################
+
+variable "backup_crn" {
+  type        = string
+  description = "The CRN of a backup resource to restore from. The backup is loaded after provisioning and the new deployment starts up that uses that data. If omitted, the database is provisioned empty."
+  default     = null
+
+  validation {
+    condition = anytrue([
+      var.backup_crn == null,
+      can(regex("^crn:.*:databases-independent-backups:", var.backup_crn))
+    ])
+    error_message = "`backup_crn` must be null, OR a Gen2 independent backup CRN containing ':databases-independent-backups:'."
+  }
+
+}
+
 variable "service_credential_names" {
   type = list(object({
     name     = string
