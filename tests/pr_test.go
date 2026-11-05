@@ -165,7 +165,7 @@ func TestRunRestoredDBExample(t *testing.T) {
 		Prefix:       "vk-r",
 		TerraformVars: map[string]interface{}{
 			"disk_mb":               permanentResources["valkeyGen2DiskMb"],
-			"valkey_version":        "9.0", // Remove this once this error https://github.com/terraform-ibm-modules/terraform-ibm-icd-valkey/pull/37#issuecomment-6649298504 is resolved
+			"valkey_version":        fmt.Sprint(permanentResources["mysqlGen2Version"]),
 			"region":                permanentResources["valkeyGen2Region"],
 			"existing_database_crn": permanentResources["valkeyGen2Crn"],
 		},
