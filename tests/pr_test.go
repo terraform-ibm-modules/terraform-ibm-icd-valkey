@@ -283,6 +283,11 @@ func TestRunFullyConfigurableSolutionSchematics(t *testing.T) {
 			"role":     "Manager",
 			"endpoint": "private",
 		},
+		{
+			"name":     "valkey-reader",
+			"role":     "Reader",
+			"endpoint": "private",
+		},
 	}
 
 	region := "us-south"

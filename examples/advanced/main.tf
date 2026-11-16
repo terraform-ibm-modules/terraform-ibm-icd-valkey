@@ -62,6 +62,11 @@ module "icd_valkey" {
       endpoint = "private"
     },
     {
+      name     = "valkey_reader"
+      role     = "Reader"
+      endpoint = "private"
+    },
+    {
       name     = "valkey_manager"
       role     = "Manager"
       endpoint = "private"
